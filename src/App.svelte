@@ -1,26 +1,18 @@
 <script lang="ts">
-	export let name: string;
-	
+	import Tabs from "./Shared/Tabs.svelte"
+	import Tab from "./Shared/Tab.svelte"
+	import Calendar from "./Calendar/Calendar.svelte";
+	import Thoughts from "./Thoughs/Thoughts.svelte";
+	import Workspace from "./Workspace/Workspace.svelte";
 </script>
 
 <main>
-	<p>Error.</p>
+	<Tabs>
+		<Tab component={Calendar} title="Calendar" icon="\_(^o^)_/"/>
+	</Tabs>
+		
+
 </main>
 
 <style>
-	:root{
-		--size:min(30vh,30vw);
-	}
-	main {
-		display: flex;
-		justify-content: center;
-		align-items: center;
-
-	}
-	p {
-		font-size:var(--size)
-	}
-
-
-
 </style>
