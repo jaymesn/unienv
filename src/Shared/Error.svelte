@@ -9,12 +9,14 @@
 
 <style>
 	:root{
-		--size:min(30vh,30vw);
+		--size:min(30%,30%);
 	}
 	main {
 		display: flex;
 		justify-content: center;
 		align-items: center;
+        width: 100%;
+        height: 100%;
 
 	}
 	p {
