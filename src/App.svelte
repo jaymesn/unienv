@@ -7,11 +7,15 @@
 </script>
 
 <main>
-	<Tabs>
-		<Tab component={Calendar} title="Calendar" icon="\_(^o^)_/"/>
+	<!-- pass in a list of tab components that you can fuck with from app.svelte-->
+	<Tabs TabList={[
+		{
+			component:Calendar,
+			title:"Calendar",
+			icon:"\_(^o^)_/"
+		}
+	]}>
 	</Tabs>
-		
-
 </main>
 
 <style>
