@@ -1,8 +1,8 @@
 <script lang="ts">
 	import Tabs from "./Shared/Tabs.svelte"
-	import Calendar from "./Calendar/Calendar.svelte";
-	import Thoughts from "./Thoughs/Thoughts.svelte";
-	import Workspace from "./Workspace/Workspace.svelte";
+	import Calendar from "./TabComponents/Calendar/Calendar.svelte";
+	import Thoughts from "./TabComponents/Thoughs/Thoughts.svelte";
+	import Workspace from "./TabComponents/Workspace/Workspace.svelte";
 </script>
 
 <main>
