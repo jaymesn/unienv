@@ -1,6 +1,5 @@
 <script lang="ts">
 	import Tabs from "./Shared/Tabs.svelte"
-	import Tab from "./Shared/Tab.svelte"
 	import Calendar from "./Calendar/Calendar.svelte";
 	import Thoughts from "./Thoughs/Thoughts.svelte";
 	import Workspace from "./Workspace/Workspace.svelte";
@@ -13,7 +12,18 @@
 			component:Calendar,
 			title:"Calendar",
 			icon:"\_(^o^)_/"
+		},
+		{
+			component:Workspace,
+			title:"Workspace",
+			icon:"idk?"
+		},
+		{
+			component:Thoughts,
+			title:"Thought Graph",
+			icon:" \ (* .) / "
 		}
+
 	]}/>
 </main>
 
