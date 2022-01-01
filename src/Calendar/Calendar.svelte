@@ -1,5 +1,5 @@
-<script>
-
+<script lang="ts">
+    console.log("from Calendar")
 </script>
 
 <main>
