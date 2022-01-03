@@ -1,9 +1,8 @@
 <script lang="ts">
     console.log("from Workspace")
 </script>
-<main>
 
-</main>
+<button> workspace </button>
 <style>
     /* your styles go here */
 </style>

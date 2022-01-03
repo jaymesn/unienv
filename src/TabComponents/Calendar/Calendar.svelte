@@ -2,10 +2,15 @@
     console.log("from Calendar")
 </script>
 
-<main>
-
-</main>
-
+<div class="Calendar">
+    <button>calendar</button>
+</div>
 <style>
-
+    .Calendar {
+        height: inherit;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: blue;
+    }
 </style>

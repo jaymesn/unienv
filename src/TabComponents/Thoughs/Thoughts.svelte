@@ -1,9 +1,7 @@
 <script lang="ts">
     console.log("from Thoughts")
 </script>
-<main>
-
-</main>
+<button>thoughts</button>
 <style>
 
 </style>
