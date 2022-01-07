@@ -1,6 +1,5 @@
 <script lang="ts">
-
-	import type { Data } from "./@types/Types.svelte"
+	import type { Data } from "./@types/all"
 
     import NavBar from "./Shared/NavBar.svelte"
 	import Error from "./Shared/Error.svelte"
@@ -19,30 +18,31 @@
         selected:0,
 
         Workspace:new Map(),
-		/*
-		:{ 1:new Map(Object.entries({"workspaceName":[
-				{
-					"date":[0,0,0],
-					"name":"",
-					"icon":"",
-				}
-		*/
         ThoughtNote:{},
-		Calendar:{
-			1:{ 
-				1:new Map(Object.entries({"workspaceName":[{"date":[0,0,0],"name":"","icon":"",}]})), 
-				2:new Map(Object.entries({"workspaceName":[{"date":[0,0,0],"name":"","icon":"",}]})), 
-				3:new Map(Object.entries({"workspaceName":[{"date":[0,0,0],"name":"","icon":"",}]})), 
-				4:new Map(Object.entries({"workspaceName":[{"date":[0,0,0],"name":"","icon":"",}]})), 
-				5:new Map(Object.entries({"workspaceName":[{"date":[0,0,0],"name":"","icon":"",}]})), 
-				6:new Map(Object.entries({"workspaceName":[{"date":[0,0,0],"name":"","icon":"",}]})), 
-				7:new Map(Object.entries({"workspaceName":[{"date":[0,0,0],"name":"","icon":"",}]})), 
-				8:new Map(Object.entries({"workspaceName":[{"date":[0,0,0],"name":"","icon":"",}]})) 
-			}
-		},        
+
+		// redo this so that the types corrospond better with the html
+		Calendar:new Map([
+			[
+				2022,{
+						1:{  
+							1:{
+								1:new Map(Object.entries({"workspaceName":[
+								{
+									"date":[0,0,0],
+									"name":"",
+									"icon":"",
+								}
+								]}))
+							} 
+						}
+					}
+			]]
+		)
+		        
 
     };
-	Object.keys(AppData.Calendar)
+	Object.keys(AppData.Calendar);
+	(window as any).look = AppData.Calendar;
 </script>
 
 <div class="app-root">

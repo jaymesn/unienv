@@ -1,8 +1,8 @@
 <script lang="ts">
-    import type { DatesObject } from "../../@types/Types.svelte";
+    import type { Alarms } from "../../@types/all";
 
     console.log("from Calendar")
-    export let allReminders:DatesObject;
+    export let allReminders:Alarms;
 
 
 </script>
@@ -12,20 +12,30 @@
     <!-- 
         redo this so that the types corrospond better with the html
         looping through the monthly keys
+
+
+        i think the typing is correct just change it from looping over the allREminders
+        to looping over a list of .. . 
+        12 months then . . .
+        5 weeks then  . . .
+        31,30 or 29 days  
     -->
-    {#each Object.keys(allReminders) as val,key }
+    {#each Object.keys(allReminders) as month}
         <div class="item-month">
             <!-- looping through the daily keys-->
+            <button>MONTH</button>
 
-            {#each Object.keys(allReminders[val]) as val2,key2}
+            {#each Object.keys(allReminders[month]) as week}
+                <div class="item-week">
+                    <button>WEEK</button>
 
+                        {#each Object.keys(allReminders[ month ][ week ]) as day}
+                            <div class="item-day">
+                                <button>DAY</button>
+                            </div>
+                        {/each}
 
-                {#if val2 }
-                <div class="item-day"></div>
-
-                {console.log( allReminders[ val ][ val2 ].entries()  )}
-                {/if}
-            
+                </div>
             {/each}
         </div>
     {/each}

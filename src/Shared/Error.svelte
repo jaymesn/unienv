@@ -4,7 +4,8 @@
 </script>
 
 <main>
-	<p>Error.</p>
+	<h1>Error.</h1>
+	<h2>type:<p>{name}</p></h2>
 </main>
 
 <style>
