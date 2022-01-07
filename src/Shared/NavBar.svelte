@@ -1,5 +1,5 @@
 <script lang="ts" >
-    import type { NavItem } from "../@types/Types.svelte"
+    import type { NavItem } from "../@types/all"
     export let selected:number;
     export let NavItemList:Array<NavItem>;
 

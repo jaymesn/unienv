@@ -16,12 +16,7 @@ export interface YearAlarms {
     11?:{1?:{1?:DayAlarms,2?:DayAlarms,3?:DayAlarms,4?:DayAlarms,5?:DayAlarms,6?:DayAlarms,7?:DayAlarms,},2?:{8?:DayAlarms,9?:DayAlarms,10?:DayAlarms,11?:DayAlarms,12?:DayAlarms,13?:DayAlarms,14?:DayAlarms,},3?:{15?:DayAlarms,16?:DayAlarms,17?:DayAlarms,18?:DayAlarms,19?:DayAlarms,20?:DayAlarms,21?:DayAlarms,},4?:{22?:DayAlarms,23?:DayAlarms,24?:DayAlarms,25?:DayAlarms,26?:DayAlarms,27?:DayAlarms,28?:DayAlarms,},5?:{29?:DayAlarms,30?:DayAlarms,}},
     12?:{1?:{1?:DayAlarms,2?:DayAlarms,3?:DayAlarms,4?:DayAlarms,5?:DayAlarms,6?:DayAlarms,7?:DayAlarms,},2?:{8?:DayAlarms,9?:DayAlarms,10?:DayAlarms,11?:DayAlarms,12?:DayAlarms,13?:DayAlarms,14?:DayAlarms,},3?:{15?:DayAlarms,16?:DayAlarms,17?:DayAlarms,18?:DayAlarms,19?:DayAlarms,20?:DayAlarms,21?:DayAlarms,},4?:{22?:DayAlarms,23?:DayAlarms,24?:DayAlarms,25?:DayAlarms,26?:DayAlarms,27?:DayAlarms,28?:DayAlarms,},5?:{29?:DayAlarms,30?:DayAlarms,31?:DayAlarms,}},
 }
-/*
-                |
-                |
-    like that v ( generate this wit rust obviously )
-*/
-   
+
 type DayAlarms = Map<workspaceName,Array<Reminder>>; 
 
 export type WorkspaceData = Map<workspaceName,Workspace>
@@ -58,7 +53,7 @@ export type Data = {
 
     Workspace:WorkspaceData,
     ThoughtNote:ThoughtGraph,
-    Calendar:DatesObject
+    Calendar:Alarms
 
     NavBar:Array<NavItem>
     selected:number
