@@ -29,15 +29,13 @@ interface Workspace {
 
 }
 
-/*
+/*                     ** REPLACE THE COMPOENT WITH A WORKSPACE MODE NOTE A SEPARATE APP **
 this should a TEXT only component where 
 yes you can nest text into other text 
 but the formatting is done in a different component
 this in a sense is just a Template or interface that you 
 layout the structure of what your thinking about */
-interface ThoughtGraph {
 
-}
 
 type workspaceName = string;
 
@@ -52,7 +50,6 @@ export interface NavItem { icon:string, title:string }
 export type Data = {
 
     Workspace:WorkspaceData,
-    ThoughtNote:ThoughtGraph,
     Calendar:Alarms
 
     NavBar:Array<NavItem>
