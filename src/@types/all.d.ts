@@ -20,11 +20,60 @@ export interface YearAlarms {
 
 type DayAlarms = Map<workspaceName,Array<Reminder>>; 
 
+
+type AlignHorizontal = "L"|"M"|"R";
+type AlignVertical = "T" |"M"|"B";
+
+type FormatOptions = 
+    "F"| // "F" means fill available space ASSIGNEND BY THE PARENT 
+    "C"  // "C" size of content (when smaller than available space)
+    ; 
+type SizeNumberFormat = number|FormatOptions;
+
+interface Vec2<T1,T2> { x:T1, y:T2 }
+interface PosFormat extends Vec2<AlignHorizontal,AlignVertical>{};
+interface SizeFormat extends Vec2<SizeNumberFormat,SizeNumberFormat>{};
+
+interface GridVec2{  amount:number,  size:SizeNumberFormat  }
+interface GridFormat {  
+    colums:GridVec2,  
+    rows:GridVec2
+    custom:Array<{ row:number, colum:number , size:SizeFormat }> // allows for custom sizing of element selected by ROW and COLUM
+}
+interface Workspace {
+    rootContainer:Container
+    colums:{ amount:1 ,size:"F"}
+    rows:{ amount:1 ,size:"F"}
+} 
+interface Container {   
+    data:{
+
+        component:any // THIS IS THE SVELTE APP TYPE THAT YOU MUST REPLACE BECAUSE U DON"T KNOW WHAT IT IS
+        settings:{}
+
+        child?:Map<string,Container> // you order the components by putting x-index as char 0 and y-index as char 1 
+    },
+
+    layout:{
+        format:{
+            overflow:Vec2<("scroll"|"expand"),("scroll"|"expand")>,  
+            pos:PosFormat,
+            size:SizeFormat,
+            pad?:{
+                left:number
+                right:number
+                top:number
+                bottom:number
+            }
+        },
+        child?:GridFormat
+
+    }
+    transition:{}
+}
+
 export type WorkspaceData = Map<workspaceName,Workspace>
 
-interface Workspace {
-
-}
 type workspaceName = string;
 
 type Reminder = {
