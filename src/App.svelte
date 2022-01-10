@@ -13,7 +13,7 @@
 			{ title:"Calendar", icon:" (^o^) "},
 			{ title:"Workspace", icon:" idk? "},
 		],
-        selected: 1,
+        selected:0,
 
         Workspace:new Map(),
 

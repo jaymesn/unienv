@@ -1,5 +1,4 @@
-/*
-redo this so that the types corrospond better with the html
+/* redo this so that the types corrospond better with the html
 looping through the monthly keys
 */
 type Alarms = Map<number,YearAlarms>

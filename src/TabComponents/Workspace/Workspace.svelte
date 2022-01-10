@@ -65,20 +65,23 @@
 
 
 <div>
-    <p>Hello There .</p>
+    <p>Hello .</p>
 </div>
 
 
 
-<button> workspace </button>
 <style>
     div {
+        height: inherit;
         display: flex;
         justify-content: center;
         align-items: center;
     }
     div > p {
+        height: fit-content;
         font-size:30vh;
+        padding:0 0 0 0;
+        margin:0 0 0 0;
     }
     /* your styles go here */
 </style>
