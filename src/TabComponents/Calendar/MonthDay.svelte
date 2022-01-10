@@ -14,18 +14,23 @@
 
 <div class="day" {style} >
     {#if getDayNum(week,day) <= daysInMonth(date.getMonth()+1)}
+
+        <!-- 
+            make it so that when this component over flow it goes from 
+                <full-name> => 
+                <3-letter-name> => 
+                <1-letter-name> 
+
+            alse do this for the alarms as well but just abreviate them 
+                
+        -->
         <div class="day-title">
             <p class="day-number">{ getDayNum(week,day) <= daysInMonth(date.getMonth() + 1) ? getDayNum(week,day) : "" }</p>
             <p class="day-name"> {Names.day[day - 1]} </p>
         </div>
 
         <div class="alarms">
-            <p>test</p>
-            <p>test</p>
-            <p>test</p>
         </div>
-    {:else} 
-
     {/if}
     
 </div>
@@ -35,11 +40,7 @@
     .day-title {
         display: flex;
     }
-    .day-name{
-        --auto:auto;
-        margin-left: auto;
-        margin-right: auto;
-    }
+    .day-name{ margin-left: auto; margin-right: auto; font-size: max(10px,1rem)}
     
 
     
@@ -60,6 +61,7 @@
         flex-direction: column;
         justify-content: center;
         align-items: center;
+        overflow-y: scroll;
     }
     
 

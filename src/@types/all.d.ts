@@ -76,6 +76,7 @@ export type WorkspaceData = Map<workspaceName,Workspace>
 type workspaceName = string;
 
 type Reminder = {
+    pathInWorkspace:string,
     date:[number,number,number],
     name:string,
     icon:string,

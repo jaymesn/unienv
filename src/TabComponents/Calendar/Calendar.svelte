@@ -1,8 +1,8 @@
 <script lang="ts">
 
-    import type { Alarms, DayAlarms } from "../../@types/all";
+    import type { Alarms, DayAlarms, YearAlarms } from "../../@types/all";
 
-    import { daysInMonth, getDayNum, range } from "../../Shared/Utils";
+    import { range , getDayAlarms }  from "../../Shared/Utils";
     
     import MonthBar from "./MonthBar.svelte";
     import MonthDay from "./MonthDay.svelte";
@@ -11,24 +11,7 @@
     let date = new Date();
     let yearAlarms = allReminders.get(date.getFullYear());
 
-    function getDayAlarms(week:number,day:number):DayAlarms|string{
-
-        let monthAlarms = yearAlarms[ date.getMonth() ]
-        let dayAlarms:string|DayAlarms = "None This Day";
-        if(monthAlarms){
-            let weekAlarms = monthAlarms [ week ]
-            if(weekAlarms){
-                dayAlarms = weekAlarms[ day ]
-                if(dayAlarms){
-                    return dayAlarms as DayAlarms
-                }
-            }
-        }
-        return dayAlarms
-    }
-    interface Spacing {
-
-    }
+    
     
     let spacing = {
         barHeight:"3rem",
@@ -39,20 +22,20 @@
 
 <div class="calendar" style="--bar-height:{spacing.barHeight}; --grid-gap:{spacing.grid}">
 
-    <!-- loop through 5 rows worth of content-->
-
     <MonthBar barHeight={spacing.barHeight}/>
-    <div class="days">
+    <div class="view-month">
         {#each range(5) as week} {#each range(7) as day}
 
-            <MonthDay style={spacing.grid} {week} {day} dayAlarms={getDayAlarms(week,day)}/>
+            <MonthDay style={spacing.grid} {week} {day} dayAlarms={getDayAlarms(week,day,yearAlarms)}/>
 
         {/each} {/each}
     </div>
 </div>
 
 <style>
-    .days {
+    .view-day{}
+    .view-week{}
+    .view-month{
 
         --row-size:calc( 
             ( 100vh 
@@ -77,7 +60,6 @@
 
     }
     .calendar {
-        --col:0;
         --black-dark:rgb(29 ,29 ,29,100);
         width:100vw;
         height:100%;

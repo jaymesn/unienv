@@ -1,9 +1,26 @@
+import type { YearAlarms, DayAlarms } from "../@types/all"
 /*  if no default start value 1 provided and will be used*/
 export const Names = {
     month:[ "January", "February", "March", "April", "May", "June","July", "August", "September", "October", "November", "December" ],
     day:["Monday ","Tuesday ","Wednesday ","Thursday ","Friday ","Saturday ","Sunday "]
 }
-export const getDayNum = (week,day) => ( (week-1)*7 + day );
+export const getDayNum = (week:number,day:number) => ( (week-1)*7 + day );
+
+export function getDayAlarms(week:number,day:number,yearAlarms:YearAlarms):DayAlarms|string{
+    let date = (new Date)
+    let monthAlarms = yearAlarms[ date.getMonth() ]
+    let dayAlarms:string|DayAlarms = "None This Day";
+    if(monthAlarms){
+        let weekAlarms = monthAlarms [ week ]
+        if(weekAlarms){
+            dayAlarms = weekAlarms[ day ]
+            if(dayAlarms){
+                return dayAlarms as DayAlarms
+            }
+        }
+    }
+    return dayAlarms
+    }
 
 export function getNumberEnding(){
 

@@ -12,8 +12,9 @@
 <style>
 
     .month-bar {
+        border-radius:1rem;
         background-color: rgb(100,100,100);
-        width:100%;
+        width:40vw;
         height: var(--bar-height);
         display: flex;
         justify-content: center;
