@@ -1,31 +1,20 @@
 import type { YearAlarms, DayAlarms } from "../@types/all"
-/*  if no default start value 1 provided and will be used*/
 export const Names = {
     month:[ "January", "February", "March", "April", "May", "June","July", "August", "September", "October", "November", "December" ],
     day:["Monday ","Tuesday ","Wednesday ","Thursday ","Friday ","Saturday ","Sunday "]
 }
+
+
+// determines what day number(1-7) a given number n maps to
+export const dateToDayNum= (n) => (n % 7 === 0) ? 7 : n - (( Math.floor(n / 7) ) * 7)
+
+// takes the weekNum and dayNum of month and converts it to a dateNum
 export const getDayNum = (week:number,day:number) => ( (week-1)*7 + day );
 
-export function getDayAlarms(week:number,day:number,yearAlarms:YearAlarms):DayAlarms|string{
-    let date = (new Date)
-    let monthAlarms = yearAlarms[ date.getMonth() ]
-    let dayAlarms:string|DayAlarms = "None This Day";
-    if(monthAlarms){
-        let weekAlarms = monthAlarms [ week ]
-        if(weekAlarms){
-            dayAlarms = weekAlarms[ day ]
-            if(dayAlarms){
-                return dayAlarms as DayAlarms
-            }
-        }
-    }
-    return dayAlarms
-    }
-
-export function getNumberEnding(){
+export function getNumEnd(number?:number){
 
         // [ (new Date).getDate().toString().length ]
-        let number =  (new Date).getDate();
+        if(!number){number = (new Date).getDate()}
 
         if( [1,21,31].includes(number) ){       // selects for numbers that end in "st" ie Monday,January 1st
             return "st";
@@ -46,7 +35,7 @@ export function getNumberEnding(){
         
 
     }
-/* 1 - 12 */
+// 1 - 12  take a month number and outputs how many days it has 
 export function daysInMonth(month:number){
 
     if( [1,3,5,7,8,10,12].includes(month) ){
@@ -66,12 +55,18 @@ export function daysInMonth(month:number){
     }
 }
 
-export function range(Stop:number,Start?:number):Array<number>{
+/*  if no default start value 1 provided and will be used*/
+
+// generates a range from 1 to a specified stop value with an optional starting 
+export function range(Stop:number,Start?:number,inc?:number):Array<number>{
     let arr = [];
     if(Start === undefined){
         Start = 1; 
     }
-    for(let i = Start;i<Stop+1;i++){
+    if(inc === undefined){
+        inc = 1;
+    }
+    for(let i = Start;i<Stop+inc;i++){
         arr.push(i);
     }
     return arr

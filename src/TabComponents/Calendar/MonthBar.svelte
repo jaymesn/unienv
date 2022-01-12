@@ -1,21 +1,22 @@
 <script lang="ts">
-
-    import { range,getNumberEnding ,Names } from "../../Shared/Utils";
+    import { range,getNumEnd,Names } from "../../Shared/Utils";
     export let barHeight:string;
 </script>
 
 <div class="month-bar" style={`--bar-height:${barHeight};`}>
+    <p> {(new Date).getDate() + getNumEnd()} </p>
     <p class="month-title"> { Names.month[ (new Date).getMonth() ]} </p> 
-    <p> {(new Date).getDate() + getNumberEnding()} </p>
 </div>
 
 <style>
 
     .month-bar {
+        margin-top:.5rem;
+        margin-bottom:.5rem;
         border-radius:1rem;
         background-color: rgb(100,100,100);
         width:40vw;
-        height: var(--bar-height);
+        height: var(--bar-height) - 1rem;
         display: flex;
         justify-content: center;
         align-items: center;

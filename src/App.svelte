@@ -21,18 +21,43 @@
 		Calendar:new Map([
 			[
 				2022,{
-						1:{  
-							1:{
-								1:new Map(Object.entries({"workspaceName":[
+					1:{
+						1:new Map([
+							["ws1",[
 								{
-									"date":[0,0,0],
-									"name":"",
-									"icon":"",
+									pathInWorkspace:"",
+									date:[2022,1,(new Date).getDate()],
+									name:"hello",
+									icon:"|^ ^|"
+
+								},	
+								{
+									pathInWorkspace:"",
+									date:[2022,1,(new Date).getDate()+1],
+									name:"hello",
+									icon:"|^ ^|"
+
 								}
-								]}))
-							} 
-						}
-					}
+							]],	
+							["ws2",[
+								{
+									pathInWorkspace:"",
+									date:[2022,1,(new Date).getDate()],
+									name:"hello2",
+									icon:"|^ ^| * 2"
+
+								},	
+								{
+									pathInWorkspace:"",
+									date:[2022,1,(new Date).getDate()+1],
+									name:"hello2",
+									icon:"|^ ^| * 2"
+
+								}
+							]]
+						]),
+					}			 
+				}
 			]]
 		)
 		        
@@ -40,19 +65,21 @@
     };
 	Object.keys(AppData.Calendar);
 	(window as any).look = AppData.Calendar;
+	let view:"Day"|"Month" = "Day"
 
 </script>
 
 <div class="app-root">
+	<!-- make this less for navigatio and more like polybar, so a thing to play and customize -->
+    <NavBar selected={AppData.selected} NavItemList = {AppData.NavBar} />
 
     {#if AppData.selected === 0}
-		<Calendar allReminders={AppData.Calendar}/>
+		<Calendar allReminders={AppData.Calendar} {view} />
     {:else if AppData.selected === 1}
 		<Workspace />
     {:else}
         <Error name="Something Went Wrong"/>
     {/if}
-    <NavBar selected={AppData.selected} NavItemList = {AppData.NavBar} />
 	
 </div>
 
