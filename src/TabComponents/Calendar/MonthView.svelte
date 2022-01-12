@@ -28,7 +28,7 @@ import type { day29type, day30type, day31type } from "../../@types/all";
     display: grid;
     grid-template-columns: repeat(7, var(--column-size));
     grid-template-rows: repeat(5, var(--row-size) );
-    grid-gap:var(--grid-gap);
+    grid-gap:0.6250rem;
     width: fit-content;
     margin-bottom:auto;
 

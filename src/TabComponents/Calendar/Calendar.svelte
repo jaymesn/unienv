@@ -1,9 +1,8 @@
 <script lang="ts">
 
-    import type { Alarms, DayAlarms, YearAlarms } from "../../@types/all";
+    import type { Alarms } from "../../@types/all";
     import Error from "../../Shared/Error.svelte";
 
-    import { range, daysInMonth }  from "../../Shared/Utils";
     
     import MonthBar from "./MonthBar.svelte";
     import DayView from "./DayView.svelte";
@@ -33,24 +32,12 @@
     */
 
     $: view = "Month";
-    $: rowAmount = 5;
-    $: columnAmount = 7;
-
    
-    
-    let spacing = {
-        barHeight:"3rem",
-        grid:"0.6250rem"
-    }
-   
-
 </script>
 
-<div class="calendar" style="--bar-height:{spacing.barHeight}; --grid-gap:{spacing.grid}">
+<div class="calendar">
 
-    <MonthBar  barHeight={spacing.barHeight}/>
-    
-    <!-- make a month and day view MAKE THINGS INTERACTABLE ALREADY-->
+    <MonthBar/>
     {#if view === "Month"}
         <MonthView {dateNum} {monthNum} monthAlarms={yearAlarms[monthNum]}/>
     {:else if view === "Day"}

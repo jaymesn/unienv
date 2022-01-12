@@ -1,9 +1,8 @@
 <script lang="ts">
     import { range,getNumEnd,Names } from "../../Shared/Utils";
-    export let barHeight:string;
 </script>
 
-<div class="month-bar" style={`--bar-height:${barHeight};`}>
+<div class="month-bar">
     <p> {(new Date).getDate() + getNumEnd()} </p>
     <p class="month-title"> { Names.month[ (new Date).getMonth() ]} </p> 
 </div>
@@ -16,7 +15,7 @@
         border-radius:1rem;
         background-color: rgb(100,100,100);
         width:40vw;
-        height: var(--bar-height) - 1rem;
+        height: 2rem;
         display: flex;
         justify-content: center;
         align-items: center;
