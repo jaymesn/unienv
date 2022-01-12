@@ -81,11 +81,10 @@ type workspaceName = string;
 
 type Reminder = {
     pathInWorkspace:string,
-    date:[number,number,number],
     name:string,
-    icon:string,
+    icon:string|icon, // PUT THE TYPE OF AN SVG IN HERE
 };
-
+type icon = any;
 export interface NavItem { icon:string, title:string }
 
 export type Data = {

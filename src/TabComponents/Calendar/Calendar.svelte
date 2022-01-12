@@ -37,7 +37,7 @@
 
 <div class="calendar">
 
-    <MonthBar/>
+    <MonthBar />
     {#if view === "Month"}
         <MonthView {dateNum} {monthNum} monthAlarms={yearAlarms[monthNum]}/>
     {:else if view === "Day"}

@@ -22,36 +22,32 @@
 			[
 				2022,{
 					1:{
-						1:new Map([
+						2:new Map([
 							["ws1",[
 								{
 									pathInWorkspace:"",
-									date:[2022,1,(new Date).getDate()],
 									name:"hello",
-									icon:"|^ ^|"
+									icon:"blue"
 
 								},	
 								{
 									pathInWorkspace:"",
-									date:[2022,1,(new Date).getDate()+1],
 									name:"hello",
-									icon:"|^ ^|"
+									icon:"blue"
 
 								}
 							]],	
 							["ws2",[
 								{
 									pathInWorkspace:"",
-									date:[2022,1,(new Date).getDate()],
 									name:"hello2",
-									icon:"|^ ^| * 2"
+									icon:"red"
 
 								},	
 								{
 									pathInWorkspace:"",
-									date:[2022,1,(new Date).getDate()+1],
 									name:"hello2",
-									icon:"|^ ^| * 2"
+									icon:"red"
 
 								}
 							]]
@@ -71,7 +67,6 @@
 
 <div class="app-root">
 	<!-- make this less for navigatio and more like polybar, so a thing to play and customize -->
-    <NavBar selected={AppData.selected} NavItemList = {AppData.NavBar} />
 
     {#if AppData.selected === 0}
 		<Calendar allReminders={AppData.Calendar} {view} />
@@ -80,6 +75,7 @@
     {:else}
         <Error name="Something Went Wrong"/>
     {/if}
+
 	
 </div>
 

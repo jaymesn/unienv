@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { range,getNumEnd,Names } from "../../Shared/Utils";
+    import { getNumEnd,Names } from "../../Shared/Utils";
 </script>
 
 <div class="month-bar">

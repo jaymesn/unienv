@@ -20,7 +20,7 @@ import type { day29type, day30type, day31type } from "../../@types/all";
 <style>
 .view-month {
 
-    --row-size:calc( ( 100vh - 0.6250rem * 5  - 3rem * 2 - 1rem) / 5 );
+    --row-size:calc( ( 100vh - 0.6250rem * 5  - 3rem - 1rem) / 5 );
     /* we take away 1rem for spacing and better content formatting*/
 
     --column-size:calc(( 90vw - 0.6250rem * 5) / 7  );
