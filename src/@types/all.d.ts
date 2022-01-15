@@ -1,5 +1,6 @@
-/* redo this so that the types corrospond better with the html
-looping through the monthly keys
+/*
+all commetn lines that start with //** needs to have their types replaced by 
+the type actually described in the comment
 */
 type Alarms = Map<number,YearAlarms>
 
@@ -50,17 +51,23 @@ interface Workspace {
 } 
 interface Container {   
     data:{
+        title:string
+        component:any //** THIS IS THE SVELTE APP TYPE THAT YOU 
+                      //MUST REPLACE BECAUSE U DON"T KNOW WHAT IT IS
 
-        component:any // THIS IS THE SVELTE APP TYPE THAT YOU MUST REPLACE BECAUSE U DON"T KNOW WHAT IT IS
-        settings:{}
+        discription:any //** THIS AMOUNTS TO A RECTIVE TEXT VALUE 
+                        //THAT ONLY CHANGES WHEN INTERNAL or CHILD COMPONENT state changes
+                        //     ( basically u can bind variable values into a string)
 
-        child?:Map<string,Container> // you order the components by putting x-index as char 0 and y-index as char 1 
+        child?:Map<string,Container> 
+
+        // you order the components by putting x-index as char 0 and y-index as char 1 
     },
 
     layout:{
         format:{
             overflow:Vec2<("scroll"|"expand"),("scroll"|"expand")>,  
-            pos:PosFormat,
+            pos:PosFormat, // where the window starts being drawn
             size:SizeFormat,
             pad?:{
                 left:number
@@ -72,7 +79,7 @@ interface Container {
         child?:GridFormat
 
     }
-    transition:{}
+
 }
 
 export type WorkspaceData = Map<workspaceName,Workspace>
@@ -82,7 +89,7 @@ type workspaceName = string;
 type Reminder = {
     pathInWorkspace:string,
     name:string,
-    icon:string|icon, // PUT THE TYPE OF AN SVG IN HERE
+    icon:string|icon, //** PUT THE TYPE OF AN SVG IN HERE
 };
 type icon = any;
 export interface NavItem { icon:string, title:string }

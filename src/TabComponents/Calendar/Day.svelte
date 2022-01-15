@@ -7,6 +7,23 @@
     export let dayAlarms:DayAlarms; 
 
     let date = new Date();
+    const updateAlarms = ()=>{$:dayAlarms = dayAlarms};
+
+    updateAlarms();
+    if(!dayAlarms){
+        dayAlarms = new Map();
+        dayAlarms.set("ws2",[
+            {
+                "pathInWorkspace":"",
+                "icon":"green",
+                "name":"inter-test"
+            }
+        ]);
+
+        (window as any).days[day] = dayAlarms;
+        (window as any).updateAlarms = updateAlarms;
+    }
+
 
 </script>
 
@@ -15,7 +32,6 @@
 
         <div class="day-title">
 
-            <p class="day-name"> { Names.day[dateToDayNum(day) - 1].slice(0,3) } </p>
             <p class="day-number">{  day+getNumEnd(day)}</p>
 
         </div>
@@ -24,7 +40,14 @@
             {#each [...dayAlarms] as [wsName,wsAlarms]} 
                 {#each wsAlarms as alarm}
                     <div class="alarm">
-                        <div class="ws-icon"></div> {alarm.name} 
+                        {#if typeof alarm.icon === "string"}
+                            <div class="ws-icon" style="--ws-colour:{alarm.icon};"></div>  
+                        {:else}
+                            <div class="ws-icon" style="--ws-colour:grey;"></div>  
+                        {/if}
+
+                        {alarm.name}
+
                     </div>
                 {/each}
 
@@ -39,18 +62,16 @@
 <style>
     .day {
         /* the 1 represents bar-height and 5 is the amount of row-gaps*/
-        --height:calc( ( 100vh - 0.6250rem * 5  - 3rem * 1 - 1rem) / 1 );
         --black-dark:rgb(29 ,29 ,29,100);
         --black-light:rgb(50 ,48 ,48,100);
-        border-bottom-right-radius: 2vh;
         background-color:var(--black-light);
         display:flex;
         flex-direction:column;
         color:white;
-
     }
     .day-title {
-        height: 1.2rem;
+        font-size:2.5vw;
+        height:fit-content;
         margin-top:0.25rem;
         padding-bottom:0.25rem;
         display: flex;
@@ -58,36 +79,34 @@
     }
 
     .alarms {
-        height:100%;
-        width: 95%;
-        margin-left:auto;
-        margin-right:auto;
-
+        margin-top:auto;
+        margin-bottom:auto;
+        height:80%;
+        width: 90%;
+        margin:auto;
         overflow: scroll;
+
     }
     .alarm {
+        padding-top:3px;
+        font-size:1.8vw;
         display: flex;
     }
 
     .ws-icon {
-        width:1rem;
-        height:1rem;
-        border-radius:1vh;
+        width:12px;
+        height:12px;
+        border-radius:1vw;
+        background-color:var(--ws-colour) ;
+        margin-right:.5rem;
     }
-
     
-    
-
-    
-
-
-
 
     /* Hide scrollbar for IE, Edge and Firefox */
-    .day-title::-webkit-scrollbar { display: none; }
-    .day-title{ -ms-overflow-style: none;  /* IE and Edge */ scrollbar-width: none;  /* Firefox */ }
+    .day-title::-webkit-scrollbar { display: none;}
+    .day-title { -ms-overflow-style: none;  /* IE and Edge */ scrollbar-width: none;  /* Firefox */ }
 
-    .day-number{ margin-left: auto; margin-right:.3rem; }
+    .day-number{ margin-right: auto; margin-left:.3rem; height:fit-content;}
     .day-name { margin-left:.3rem;}
 
     /* Hide scrollbar for IE, Edge and Firefox */

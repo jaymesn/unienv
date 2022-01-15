@@ -6,8 +6,7 @@
 
 	import Calendar from  "./TabComponents/Calendar/Calendar.svelte";
 	import Workspace from "./TabComponents/Workspace/Workspace.svelte";
-
-    let AppData:Data = {
+    let AppData = {
 
         NavBar:[
 			{ title:"Calendar", icon:" (^o^) "},
@@ -59,9 +58,9 @@
 		        
 
     };
+	$: AppData;
+	(window as any).AppData = AppData;
 	Object.keys(AppData.Calendar);
-	(window as any).look = AppData.Calendar;
-	let view:"Day"|"Month" = "Day"
 
 </script>
 
@@ -69,7 +68,9 @@
 	<!-- make this less for navigatio and more like polybar, so a thing to play and customize -->
 
     {#if AppData.selected === 0}
-		<Calendar allReminders={AppData.Calendar} {view} />
+
+		<Calendar allReminders={AppData.Calendar}/>
+
     {:else if AppData.selected === 1}
 		<Workspace />
     {:else}

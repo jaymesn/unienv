@@ -1,54 +1,59 @@
 <script lang="ts">
-
+    
     import type { Alarms } from "../../@types/all";
-    import Error from "../../Shared/Error.svelte";
 
     
-    import MonthBar from "./MonthBar.svelte";
-    import DayView from "./DayView.svelte";
     import MonthView from "./MonthView.svelte";
+    import DayView from "./DayView.svelte";
+    import { Names ,getNumEnd} from "../../Shared/Utils";
     
     export let allReminders:Alarms;
-    export let view:"Day"|"Month";
+
+    let view:"Day"|"Month" = "Month";
+    $: view = view;
 
     let date = new Date();
 
     let yearNum = date.getFullYear();
+    $: yearNum = yearNum;
+
     let monthNum = date.getMonth() + 1;
+    $: monthNum = monthNum;
+
     let dateNum = date.getDate();
+    $: dateNum = dateNum;
 
     let yearAlarms = allReminders.get(yearNum);
 
+    let dayAlarms = yearAlarms[monthNum][dateNum]
 
-    /*
-
-    update the types so that its a linear list of from 1 to <month-end> 
-    make it easeir to query dates with the calendar that way too
-
-
-    after fooling around with the gride last night i realize that im gonna have to roll my own
-    css repeat function that updates from javascript since it doesn't mesh so well with svelte
-
-    */
-
-    $: view = "Month";
-   
+    dateNum=2
+    /* {Names.month[monthNum -1] } { Names.day[dateNum].slice(0,3)}, {dateNum+getNumEnd(dateNum)} {yearNum}*/
 </script>
 
 <div class="calendar">
+    <div class="bar">
+        <!-- Redo the bar component since it was dogshit last time -->
+        hello
 
-    <MonthBar />
+    </div>
     {#if view === "Month"}
-        <MonthView {dateNum} {monthNum} monthAlarms={yearAlarms[monthNum]}/>
+        <MonthView {monthNum} {yearAlarms} />
     {:else if view === "Day"}
-        <DayView />
-    {:else}
-        <Error name="Couldn't decide what alarms to Show u D:"/>
+        <DayView bind:monthAlarms={yearAlarms[monthNum]} {dateNum} />
     {/if}
+
+
 </div>
 
 <style>
-    .view-day{}
+    .bar {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width:calc(90vw + 0.6250rem) ;
+        height: 10vh;
+    }
     .calendar {
         --black-dark:rgb(29 ,29 ,29,100);
         width:100vw;

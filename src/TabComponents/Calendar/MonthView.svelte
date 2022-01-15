@@ -1,11 +1,14 @@
 <script lang="ts">
-import type { day29type, day30type, day31type } from "../../@types/all";
+
+    import type { day29type, day30type, day31type, YearAlarms } from "../../@types/all";
     import { range , daysInMonth } from "../../Shared/Utils";
     import Day from "./Day.svelte"
 
-    export let dateNum:number;
     export let monthNum:number;
-    export let monthAlarms:day29type|day30type|day31type;
+    export let yearAlarms:YearAlarms;
+
+    let monthAlarms:day29type|day30type|day31type = yearAlarms[monthNum];
+    (window as any).days = {}
 
 </script>
 
@@ -18,9 +21,9 @@ import type { day29type, day30type, day31type } from "../../@types/all";
 </div>
 
 <style>
-.view-month {
+    .view-month {
 
-    --row-size:calc( ( 100vh - 0.6250rem * 5  - 3rem - 1rem) / 5 );
+    --row-size:calc( ( 90vh - 0.6250rem * 5  - 3rem - 1rem) / 5 );
     /* we take away 1rem for spacing and better content formatting*/
 
     --column-size:calc(( 90vw - 0.6250rem * 5) / 7  );
@@ -29,7 +32,6 @@ import type { day29type, day30type, day31type } from "../../@types/all";
     grid-template-columns: repeat(7, var(--column-size));
     grid-template-rows: repeat(5, var(--row-size) );
     grid-gap:0.6250rem;
-    width: fit-content;
     margin-bottom:auto;
 
 
