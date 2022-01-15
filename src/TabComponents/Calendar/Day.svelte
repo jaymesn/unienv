@@ -70,15 +70,17 @@
         color:white;
     }
     .day-title {
-        font-size:2.5vw;
+        font-size:max(1rem,2vw);
         height:fit-content;
         margin-top:0.25rem;
         padding-bottom:0.25rem;
+       
         display: flex;
         overflow-x:scroll;
     }
 
     .alarms {
+        font-size:1.5vw;
         margin-top:auto;
         margin-bottom:auto;
         height:80%;
@@ -89,13 +91,14 @@
     }
     .alarm {
         padding-top:3px;
-        font-size:1.8vw;
         display: flex;
+        align-items:center;
     }
 
     .ws-icon {
-        width:12px;
-        height:12px;
+        --size:2.1897810218978103vh;
+        width:var(--size);
+        height:var(--size);
         border-radius:1vw;
         background-color:var(--ws-colour) ;
         margin-right:.5rem;
@@ -107,7 +110,6 @@
     .day-title { -ms-overflow-style: none;  /* IE and Edge */ scrollbar-width: none;  /* Firefox */ }
 
     .day-number{ margin-right: auto; margin-left:.3rem; height:fit-content;}
-    .day-name { margin-left:.3rem;}
 
     /* Hide scrollbar for IE, Edge and Firefox */
     .alarms::-webkit-scrollbar { display: none; }

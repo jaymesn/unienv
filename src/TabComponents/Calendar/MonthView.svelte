@@ -23,7 +23,7 @@
 <style>
     .view-month {
 
-    --row-size:calc( ( 90vh - 0.6250rem * 5  - 3rem - 1rem) / 5 );
+    --row-size:calc( ( 97vh - 0.6250rem * 5  - 3rem - 1rem) / 5 );
     /* we take away 1rem for spacing and better content formatting*/
 
     --column-size:calc(( 90vw - 0.6250rem * 5) / 7  );

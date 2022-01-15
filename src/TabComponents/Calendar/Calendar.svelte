@@ -48,9 +48,7 @@
 
 <style>
     .bar {
-        display: flex;
-        justify-content: center;
-        align-items: center;
+        
         width:calc(90vw + 0.6250rem) ;
         height: 10vh;
     }
