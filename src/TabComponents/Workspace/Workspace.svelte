@@ -9,59 +9,8 @@
     } from "../../@types/all";
 
     export let selected:string;
+ 
 
-    let container1_wsData:WSCdata<1> = { "generic":1 }
-    let container1:WSContainer = {
-
-        title:"this is a title for Container1",
-
-        discription:"discription for Container1",
-        component:{
-            type:"TG",
-            data:container1_wsData
-        }
-    }
-
-    let newWorkspace: Workspace = {
-        rootContainer:{
-            component:{
-                type:"Note",
-                data:{
-                    base:"field"
-                }
-            },
-            discription:"",
-            title:"",
-            child:new Map([
-                ["Container",container1]
-            ])
-        },
-
-        
-    }
-
-
-
-
-   
-    /*
-    this is where u take ur thought graphs and add formatting
-    and other forms of content IE panels,imgs,iframes
-    */
-
-    /*                     ** REPLACE THE COMPOENT WITH A WORKSPACE MODE NOTE A SEPARATE APP **
-    this should a TEXT only component where 
-    yes you can nest text into other text 
-    but the formatting is done in a different component
-    this in a sense is just a Template or interface that you 
-    layout the structure of what your thinking about */
-    
-
-    /*
-    make sure the templateing feature 
-    uses naviatgion to when focuesed 
-    on a element it display a layout
-    */
 
 </script>
 

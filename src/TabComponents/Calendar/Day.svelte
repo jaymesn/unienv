@@ -1,5 +1,5 @@
 <script lang="ts">
-    import type { DayAlarms, Reminder, workspaceName } from "../../@types/all";
+    import type { DayAlarms, Reminder, workspaceName } from "./Calendar";
 
     import { daysInMonth,Names, getNumEnd, dateToDayNum } from "../../Shared/Utils"
 

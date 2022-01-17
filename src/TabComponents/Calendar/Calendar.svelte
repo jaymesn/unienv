@@ -1,6 +1,6 @@
 <script lang="ts">
     
-    import type { Alarms } from "../../@types/all";
+    import type { Alarms } from "./Calendar";
 
     
     import MonthView from "./MonthView.svelte";
@@ -34,7 +34,7 @@
 <div class="calendar">
     <div class="bar">
         <div></div>
-        <p class="title">
+       <p class="title">
             {Names.month[monthNum -1] } { Names.day[dateNum].slice(0,3)}, {dateNum+getNumEnd(dateNum)} {yearNum}
         </p>
 
@@ -59,6 +59,8 @@
         height:inherit;
     }
     .title {
+        padding:0 0 0 0;
+        margin:0 0 0 0;
         font-size:max(0.5rem,2vh);
         color:var(--black-dark);
         font-weight:bold;

@@ -1,6 +1,4 @@
 <script lang="ts">
-
-	"[name]:[component_name]/and so on and so on"
 	
 	import Error from "./Shared/Error.svelte"
 
