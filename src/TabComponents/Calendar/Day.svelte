@@ -70,7 +70,7 @@
         color:white;
     }
     .day-title {
-        font-size:max(1rem,2vw);
+        font-size:max(0.5rem,2vh);
         height:fit-content;
         margin-top:0.25rem;
         padding-bottom:0.25rem;

@@ -1,40 +1,42 @@
 <script lang="ts">
-    import Note from "../../WorkspaceComponents/Notes/Note.svelte";
 
+    import Notes from "../../WorkspaceComponents/Notes/Note.svelte";
+    import ThoughtGraph from "../../WorkspaceComponents/ThoughtGraph/ThoughtGraph.svelte";
     import type { 
-        Workspace, 
+        WSContainer,
+        Workspace,
+        WSCdata, 
     } from "../../@types/all";
 
-    let newWorkspace :Workspace = {
+    export let selected:string;
 
+    let container1_wsData:WSCdata<1> = { "generic":1 }
+    let container1:WSContainer = {
+
+        title:"this is a title for Container1",
+
+        discription:"discription for Container1",
+        component:{
+            type:"TG",
+            data:container1_wsData
+        }
+    }
+
+    let newWorkspace: Workspace = {
         rootContainer:{
-            data:{
-                component:Note,
-                settings:{},
-                child:new Map()
-            },
-            layout:{
-                format:{
-                    overflow:{ x: "scroll", y:"expand"},
-                    size:{ x:"F", y:"F"},
-                    pos:{ x:"M", y:"M"},
-                    pad:{
-                        left:0,
-                        right:0,
-                        top:0,
-                        bottom:0
-                    }
-                },
-                child:{
-                    colums:{ amount:1, size:"F" },
-                    rows:{ amount:1, size:"F" },
-                    custom:[]
+            component:{
+                type:"Note",
+                data:{
+                    base:"field"
                 }
             },
-            transition:{}
+            discription:"",
+            title:"",
+            child:new Map([
+                ["Container",container1]
+            ])
         },
-        colums:{ amount:1, size:"F" },
-        rows:{ amount:1, size:"F" },
+
         
     }
 
@@ -63,25 +65,18 @@
 
 </script>
 
+<div class="ws-root">
 
-<div>
-    <p>Hello .</p>
 </div>
-
-
-
 <style>
-    div {
-        height: inherit;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-    div > p {
-        height: fit-content;
-        font-size:30vh;
-        padding:0 0 0 0;
-        margin:0 0 0 0;
-    }
-    /* your styles go here */
+    .ws-root {
+        width:100%;
+        height:100%;
+
+        display:grid;
+        grid-template-columns:1fr ;
+        grid-template-rows:1fr;
+        grid-gap:1vh;
+
+    } 
 </style>

@@ -13,6 +13,7 @@
 </script>
 
 <div class="view-month">
+
     {#each range(daysInMonth(monthNum)) as day}
         <Day {day} dayAlarms={monthAlarms[day]}/>
             
@@ -23,18 +24,17 @@
 <style>
     .view-month {
 
-    --row-size:calc( ( 97vh - 0.6250rem * 5  - 3rem - 1rem) / 5 );
-    /* we take away 1rem for spacing and better content formatting*/
+    --row-size:calc(  86vh / 5 );
+    --column-size:calc(  86vw / 7 );
 
-    --column-size:calc(( 90vw - 0.6250rem * 5) / 7  );
 
     display: grid;
     grid-template-columns: repeat(7, var(--column-size));
     grid-template-rows: repeat(5, var(--row-size) );
-    grid-gap:0.6250rem;
-    margin-bottom:auto;
+    grid-row-gap:0.5vh;
+    grid-column-gap:0.5vw;
 
 
 }
- 
+
 </style>

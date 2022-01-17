@@ -9,9 +9,7 @@
 </main>
 
 <style>
-	:root{
-		--size:min(30%,30%);
-	}
+	
 	main {
 		display: flex;
 		justify-content: center;
@@ -21,7 +19,7 @@
 
 	}
 	p {
-		font-size:var(--size)
+		font-size:30%;
 	}
 
 

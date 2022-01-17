@@ -45,40 +45,48 @@ interface GridFormat {
     custom:Array<{ row:number, colum:number , size:SizeFormat }> // allows for custom sizing of element selected by ROW and COLUM
 }
 interface Workspace {
-    rootContainer:Container
-    colums:{ amount:1 ,size:"F"}
-    rows:{ amount:1 ,size:"F"}
+    rootContainer:WSContainer
 } 
-interface Container {   
-    data:{
-        title:string
-        component:any //** THIS IS THE SVELTE APP TYPE THAT YOU 
-                      //MUST REPLACE BECAUSE U DON"T KNOW WHAT IT IS
 
-        discription:any //** THIS AMOUNTS TO A RECTIVE TEXT VALUE 
-                        //THAT ONLY CHANGES WHEN INTERNAL or CHILD COMPONENT state changes
-                        //     ( basically u can bind variable values into a string)
+interface Note {
 
-        child?:Map<string,Container> 
+}
 
-        // you order the components by putting x-index as char 0 and y-index as char 1 
-    },
-
+interface ThoughtGraph {
     layout:{
-        format:{
-            overflow:Vec2<("scroll"|"expand"),("scroll"|"expand")>,  
-            pos:PosFormat, // where the window starts being drawn
-            size:SizeFormat,
-            pad?:{
-                left:number
-                right:number
-                top:number
-                bottom:number
-            }
-        },
-        child?:GridFormat
-
+        tree:"spread"|"tiled"|"board"
     }
+
+}
+interface WSCdata<T> {
+    "generic":T
+}
+interface WSCchild {
+    gridLayout:{
+        rows:{
+            amount:number
+            size:string|string[]
+        }
+        columns:{
+            amount:number
+            size:string|string[]
+        }
+    }
+    items:Map<string,WSContainer> 
+}
+
+interface WSContainer {   
+    title?:string
+    discription?:any //** THIS AMOUNTS TO A REACTIVE TEXT VALUE 
+    component:{
+        type:"TG"|"Note"|"Root"
+        data:WSCdata //** THIS IS THE SVELTE APP data specific to each type 
+    }
+
+    child?:WSCchild
+    // you order the components by putting x-index as char 0 and y-index as char 1 
+
+
 
 }
 
@@ -87,6 +95,13 @@ export type WorkspaceData = Map<workspaceName,Workspace>
 type workspaceName = string;
 
 type Reminder = {
+
+	/* WS:[name]:[component_name]-[state] */
+    /* [state] = focused,hidden or unfocused */
+
+    /* TG:[name]:[node_type]-[state] */
+    /* [state] = focused,hidden or unfocused */
+
     pathInWorkspace:string,
     name:string,
     icon:string|icon, //** PUT THE TYPE OF AN SVG IN HERE
@@ -99,7 +114,6 @@ export type Data = {
     Workspace:WorkspaceData,
     Calendar:Alarms
 
-    NavBar:Array<NavItem>
     selected:number
 
         

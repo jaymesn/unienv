@@ -1,7 +1,7 @@
 <script lang="ts">
-	import type { Data } from "./@types/all"
 
-    import NavBar from "./Shared/NavBar.svelte"
+	"[name]:[component_name]/and so on and so on"
+	
 	import Error from "./Shared/Error.svelte"
 
 	import Calendar from  "./TabComponents/Calendar/Calendar.svelte";
@@ -12,7 +12,7 @@
 			{ title:"Calendar", icon:" (^o^) "},
 			{ title:"Workspace", icon:" idk? "},
 		],
-        selected:0,
+        selected:1,
 
         Workspace:new Map(),
 
@@ -72,7 +72,7 @@
 		<Calendar allReminders={AppData.Calendar}/>
 
     {:else if AppData.selected === 1}
-		<Workspace />
+		<Workspace selected={"ws1"}/>
     {:else}
         <Error name="Something Went Wrong"/>
     {/if}
