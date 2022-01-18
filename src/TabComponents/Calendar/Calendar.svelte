@@ -71,7 +71,6 @@
         justify-self:center;
     }
     .bar {
-        background-color: red;
         display:grid;
         grid-gap:10px;
         grid-template-columns: .484fr 2fr .484fr;

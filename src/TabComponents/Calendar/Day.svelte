@@ -39,7 +39,7 @@
         {#if dayAlarms}
             {#each [...dayAlarms] as [wsName,wsAlarms]} 
                 {#each wsAlarms as alarm}
-                    <div class="alarm">
+                    <button class="alarm">
                         {#if typeof alarm.icon === "string"}
                             <div class="ws-icon" style="--ws-colour:{alarm.icon};"></div>  
                         {:else}
@@ -48,7 +48,7 @@
 
                         {alarm.name}
 
-                    </div>
+                    </button>
                 {/each}
 
             {/each}
@@ -90,6 +90,10 @@
 
     }
     .alarm {
+        margin-top:1vh; 
+        border-width:4px;
+        border-color:var(--black-dark);
+        background-color: grey;
         padding-top:3px;
         display: flex;
         align-items:center;
