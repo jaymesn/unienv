@@ -1,16 +1,40 @@
-interface Workspace {
+export interface Workspace {
     rootContainer:WSContainer
 }
+export interface WorkspaceJSON {
+    rootContainer:WSContainerJSON
+}
+export interface WSContainerJSON {
+    title?:string
+    description?:string
+    component:{
+        type:"TG"|"Note"|"Root"
+        data:WSCdata<null>
+    },
+    child?:WSCchildJSON
+}
+
 
 interface WSCdata<T> {
     "generic":T
 }
 
-interface WSCdata<T> {
-    "generic":T
-}
 
-interface WSCchild {
+interface WSContainer {   
+    title?:string
+    description?:any //** THIS AMOUNTS TO A REACTIVE TEXT VALUE 
+    component:{
+        type:"TG"|"Note"|"Root"
+        data:WSCdata<null> //** THIS IS THE SVELTE APP data specific to each type 
+    },
+    child?:WSCchild
+       
+    // you order the components by putting x-index as char 0 and y-index as char 1 
+
+
+
+}
+interface WSCchildJSON {
     gridLayout:{
         rows:{
             amount:number
@@ -21,14 +45,17 @@ interface WSCchild {
             size:string|string[]
         }
     }
-    items:Map<string,WSContainer> 
+    items:[string,WSContainerJSON][] 
 }
-
 interface WSCchild {
     gridLayout:{
+
+        // the sizes of multiple grid elements 
+        // is an array because the repeat() function in css
+        // only "repeats" once  
         rows:{
             amount:number
-            size:string|string[]
+            size:string|string[] 
         }
         columns:{
             amount:number
@@ -40,4 +67,5 @@ interface WSCchild {
 
 
 export type WorkspaceData = Map<workspaceName,Workspace>
+export type WorkspaceDataJSON = [workspaceName,WorkspaceJSON][]
 

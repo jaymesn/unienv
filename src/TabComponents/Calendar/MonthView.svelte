@@ -1,13 +1,13 @@
 <script lang="ts">
 
-    import type { day29type, day30type, day31type, YearAlarms } from "../../@types/all";
+    import type { day29type, day30type, day31type,DayAlarms ,YearAlarms} from "./Calendar.d";
     import { range , daysInMonth } from "../../Shared/Utils";
     import Day from "./Day.svelte"
 
     export let monthNum:number;
-    export let yearAlarms:YearAlarms;
+    export let yearAlarms:YearAlarms<DayAlarms>;
 
-    let monthAlarms:day29type|day30type|day31type = yearAlarms[monthNum];
+    let monthAlarms:day29type<DayAlarms>|day30type<DayAlarms>|day31type<DayAlarms> = yearAlarms[monthNum];
     (window as any).days = {}
 
 </script>

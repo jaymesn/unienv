@@ -1,12 +1,13 @@
 <script lang="ts">
     
-    import type { Alarms } from "./Calendar";
+    import type { AlarmsJSON,Alarms, DayAlarms, YearAlarms } from "./Calendar";
 
     
     import MonthView from "./MonthView.svelte";
-    import DayView from "./DayView.svelte";
+    import DayView from "./DayView/DayView.svelte";
     import { Names ,getNumEnd} from "../../Shared/Utils";
     
+
     export let allReminders:Alarms;
 
     let view:"Day"|"Month" = "Month";
@@ -23,7 +24,14 @@
     let dateNum = date.getDate();
     $: dateNum = dateNum;
 
-    let yearAlarms = allReminders.get(yearNum);
+    let yearAlarms = (allReminders as any).get(yearNum);
+
+    if(yearAlarms.length !== undefined){
+        //map
+    } else {
+        // array
+    }
+
 
     let dayAlarms = yearAlarms[monthNum][dateNum]
 
@@ -59,6 +67,7 @@
         height:inherit;
     }
     .title {
+        white-space: nowrap;
         padding:0 0 0 0;
         margin:0 0 0 0;
         font-size:max(0.5rem,2vh);

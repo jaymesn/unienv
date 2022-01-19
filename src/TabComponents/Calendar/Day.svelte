@@ -1,5 +1,5 @@
 <script lang="ts">
-    import type { DayAlarms, Reminder, workspaceName } from "./Calendar";
+    import type { DayAlarms, Reminder} from "./Calendar";
 
     import { daysInMonth,Names, getNumEnd, dateToDayNum } from "../../Shared/Utils"
 
@@ -39,16 +39,18 @@
         {#if dayAlarms}
             {#each [...dayAlarms] as [wsName,wsAlarms]} 
                 {#each wsAlarms as alarm}
-                    <button class="alarm">
+
+                    <div class="alarm">
                         {#if typeof alarm.icon === "string"}
                             <div class="ws-icon" style="--ws-colour:{alarm.icon};"></div>  
                         {:else}
                             <div class="ws-icon" style="--ws-colour:grey;"></div>  
                         {/if}
-
+                       <p style="margin-top:.2vh;margin-bottom:.2vh;">
                         {alarm.name}
+                       </p> 
 
-                    </button>
+                    </div>
                 {/each}
 
             {/each}
@@ -80,7 +82,7 @@
     }
 
     .alarms {
-        font-size:1.5vw;
+        font-size:max(1.5vw,18px);
         margin-top:auto;
         margin-bottom:auto;
         height:80%;
@@ -90,22 +92,22 @@
 
     }
     .alarm {
-        margin-top:1vh; 
-        border-width:4px;
-        border-color:var(--black-dark);
-        background-color: grey;
+        border:solid black .625vh;
+        border-radius: 4px;
+        white-space: nowrap;
         padding-top:3px;
         display: flex;
         align-items:center;
+        margin-top:5px;
     }
 
     .ws-icon {
         --size:2.1897810218978103vh;
-        width:var(--size);
-        height:var(--size);
-        border-radius:1vw;
+        min-width:2vh;
+        min-height:2vh;
+        border-radius:4px;
         background-color:var(--ws-colour) ;
-        margin-right:.5rem;
+        margin:.5vh;
     }
     
 
