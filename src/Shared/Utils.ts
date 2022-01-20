@@ -1,4 +1,3 @@
-import type { YearAlarms, DayAlarms } from "../@types/all"
 export const Names = {
     month:[ "January", "February", "March", "April", "May", "June","July", "August", "September", "October", "November", "December" ],
     day:["Monday ","Tuesday ","Wednesday ","Thursday ","Friday ","Saturday ","Sunday "]
@@ -36,7 +35,7 @@ export function getNumEnd(number?:number){
 
     }
 // 1 - 12  take a month number and outputs how many days it has 
-export function daysInMonth(month:number){
+export function getDaysInMonth(month:number){
 
     if( [1,3,5,7,8,10,12].includes(month) ){
         return 31
@@ -71,3 +70,4 @@ export function range(Stop:number,Start?:number,inc?:number):Array<number>{
     }
     return arr
 }
+(window as any).range = range;
