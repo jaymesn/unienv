@@ -1,14 +1,13 @@
 <script lang="ts">
-    
-    import type { AlarmsJSON,Alarms, DayAlarms, YearAlarms } from "./Calendar";
 
-    
-    import MonthView from "./MonthView.svelte";
-    import DayView from "./DayView/DayView.svelte";
-    import { Names ,getNumEnd} from "../../Shared/Utils";
-    
+    import MonthView from "../MonthView.svelte";
+    import DayView from "../DayView.svelte";
+    import { dateToDayNum, Names ,getNumEnd, getDayNum} from "../../../Shared/Utils";
+    import type { Controller } from "./Controller"
 
-    export let allReminders:Alarms;
+    export let ctrl:Controller;
+
+    ctrl.state = "Loaded";
 
     let view:"Day"|"Month" = "Month";
     $: view = view;
@@ -24,39 +23,27 @@
     let dateNum = date.getDate();
     $: dateNum = dateNum;
 
-    let yearAlarms = (allReminders as any).get(yearNum);
-
-    if(yearAlarms.length !== undefined){
-        //map
-    } else {
-        // array
-    }
-
-
-    let dayAlarms = yearAlarms[monthNum][dateNum]
-
-    dateNum=2
     /* {Names.month[monthNum -1] } { Names.day[dateNum].slice(0,3)}, {dateNum+getNumEnd(dateNum)} {yearNum}*/
 </script>
 
 <div class="calendar">
     <div class="bar">
-        <div></div>
+    <div></div>
        <p class="title">
-            {Names.month[monthNum -1] } { Names.day[dateNum].slice(0,3)}, {dateNum+getNumEnd(dateNum)} {yearNum}
+            {Names.month[monthNum -1] } { Names.day[date.getDay() - 1].slice(0,3)}, {dateNum+getNumEnd(dateNum)} {yearNum}
         </p>
 
 
         <button class="view-toggle">{view}</button>
                 <!-- Redo the bar component since it was dogshit last time -->
-
-   </div>
+  
+    </div>
     {#if view === "Month"}
-        <MonthView {monthNum} {yearAlarms} />
+        <MonthView {ctrl} {monthNum} />
     {:else if view === "Day"}
-        <DayView bind:monthAlarms={yearAlarms[monthNum]} {dateNum} />
+        <DayView {ctrl} {dateNum} />
     {/if}
-
+    
 
 </div>
 

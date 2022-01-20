@@ -1,34 +1,20 @@
 <script lang="ts">
-    import type { DayAlarms, Reminder} from "./Calendar";
+    import type { DayAlarms, Reminder} from "./Calendar/Types";
+    import type { Controller } from "./Calendar/Controller"
+    import {getDaysInMonth,Names, getNumEnd, dateToDayNum } from "../../Shared/Utils"
 
-    import { daysInMonth,Names, getNumEnd, dateToDayNum } from "../../Shared/Utils"
-
+    export let ctrl:Controller;
     export let day:number;
-    export let dayAlarms:DayAlarms; 
 
     let date = new Date();
-    const updateAlarms = ()=>{$:dayAlarms = dayAlarms};
-
-    updateAlarms();
-    if(!dayAlarms){
-        dayAlarms = new Map();
-        dayAlarms.set("ws2",[
-            {
-                "pathInWorkspace":"",
-                "icon":"green",
-                "name":"inter-test"
-            }
-        ]);
-
-        (window as any).days[day] = dayAlarms;
-        (window as any).updateAlarms = updateAlarms;
-    }
+    let dayAlarms:DayAlarms = new Map();
+    ctrl.state = "test3"
 
 
 </script>
 
 <div class="day">
-    {#if day <= daysInMonth(date.getMonth()+1)}
+    {#if day <= getDaysInMonth(date.getMonth()+1)}
 
         <div class="day-title">
 
@@ -46,7 +32,7 @@
                         {:else}
                             <div class="ws-icon" style="--ws-colour:grey;"></div>  
                         {/if}
-                       <p style="margin-top:.2vh;margin-bottom:.2vh;">
+                       <p style="margin-top:.2vh;margin-bottom:.2vh;margin-right:5px;">
                         {alarm.name}
                        </p> 
 
@@ -92,6 +78,7 @@
 
     }
     .alarm {
+        width: fit-content;
         border:solid black .625vh;
         border-radius: 4px;
         white-space: nowrap;
@@ -99,6 +86,7 @@
         display: flex;
         align-items:center;
         margin-top:5px;
+        margin-right:5px;
     }
 
     .ws-icon {
