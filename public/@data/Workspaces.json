@@ -1,0 +1,41 @@
+[
+    ["ws1",{
+        "rootContainer":{
+            "title":"ws1-title",
+            "description":"ws1-description",
+            "component":{ "type":"Root", "data":{"generic":1}},
+            "child":{
+                "gridLayout":{
+                    "rows":{
+                        "amount":1,
+                        "size":"1fr"
+                    },
+                    "columns":{
+                        "amount":1,
+                        "size":"1fr"
+                    }
+
+                },
+                "items":[
+                    ["ws1-child1",{
+                        "title":"ws1-child1-title",
+                        "description":"ws1-child1-description",
+                        "component":{
+                            "type":"Note",
+                            "data":{"generic":"test data"}
+                        }
+                    }],
+                    ["ws1-child2",{
+                        "title":"ws1-child2-title",
+                        "description":"ws1-child2-description",
+                        "component":{
+                            "type":"Note",
+                            "data":{"generic":"test data"}
+                        }
+                    }]
+                ]
+            }
+
+        }
+    }]
+]
