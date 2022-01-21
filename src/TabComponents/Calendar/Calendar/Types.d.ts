@@ -1,4 +1,8 @@
-
+export type AlarmsType = Reminder|Reminder[]|DayAlarms|MonthAlarms|YearAlarms|Alarms;
+type yy = number
+type mm = number
+type dd = number
+export type date = [yy,mm,dd]
 
 type Reminder = {
 

@@ -6,13 +6,11 @@
 	import { Controller as CalendarController } from "./TabComponents/Calendar/Calendar/Controller"
 
 	import Workspace from "./TabComponents/Workspace/Workspace/Component.svelte"
-	import { Controller as WorkspaceController } from "./TabComponents/Calendar/Calendar/Controller"
-
-	let calendarCTRL = new CalendarController();	
+	import { Controller as WorkspaceController } from "./TabComponents/Workspace/Workspace/Controller"
+	
+	let calendarCTRL = new CalendarController("./@data/Alarms.json");	
 	let workspaceCTRL = new WorkspaceController();	
 	let selected = 0;
-	// create the alarms typing 
-
 	(window as any).ctrl = calendarCTRL; 
 </script>
 
@@ -20,7 +18,7 @@
 	<!-- make this less for navigatio and more like polybar, so a thing to play and customize -->
 
     {#if selected === 0}
-		<Calendar ctrl={calendarCTRL} />
+		<Calendar ctrl={calendarCTRL}  />
     {:else if selected === 1}
 		<Workspace selected={"ws1"}/>
     {:else}

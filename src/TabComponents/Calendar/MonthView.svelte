@@ -12,15 +12,15 @@
 
     export let ctrl:Controller;
     export let monthNum:number;
-    ctrl.state = "test2"
+    export let yearNum:number;
 
 
 </script>
 
 <div class="view-month">
 
-    {#each range(getDaysInMonth(monthNum)) as day}
-        <Day {ctrl} {day} />
+    {#each range(getDaysInMonth(monthNum)) as dayNum}
+        <Day {ctrl} {yearNum} {monthNum} {dayNum} />
             
     {/each}
 

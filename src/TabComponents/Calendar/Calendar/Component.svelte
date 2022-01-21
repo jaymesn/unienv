@@ -4,10 +4,7 @@
     import DayView from "../DayView.svelte";
     import { dateToDayNum, Names ,getNumEnd, getDayNum} from "../../../Shared/Utils";
     import type { Controller } from "./Controller"
-
     export let ctrl:Controller;
-
-    ctrl.state = "Loaded";
 
     let view:"Day"|"Month" = "Month";
     $: view = view;
@@ -23,6 +20,9 @@
     let dateNum = date.getDate();
     $: dateNum = dateNum;
 
+    let dayNum = date.getDay();
+    $: dayNum = dayNum;
+
     /* {Names.month[monthNum -1] } { Names.day[dateNum].slice(0,3)}, {dateNum+getNumEnd(dateNum)} {yearNum}*/
 </script>
 
@@ -30,16 +30,16 @@
     <div class="bar">
     <div></div>
        <p class="title">
-            {Names.month[monthNum -1] } { Names.day[date.getDay() - 1].slice(0,3)}, {dateNum+getNumEnd(dateNum)} {yearNum}
+            {Names.month[monthNum -1] } { Names.day[dayNum - 1].slice(0,3)}, {dateNum+getNumEnd(dateNum)} {yearNum}
         </p>
 
 
-        <button class="view-toggle">{view}</button>
+        <button class="view-toggle" on:click={event=>view === "Month" ? view = "Day": view = "Month"}>{view}</button>
                 <!-- Redo the bar component since it was dogshit last time -->
   
     </div>
     {#if view === "Month"}
-        <MonthView {ctrl} {monthNum} />
+        <MonthView {ctrl} {yearNum} {monthNum}  />
     {:else if view === "Day"}
         <DayView {ctrl} {dateNum} />
     {/if}
@@ -52,6 +52,7 @@
         padding:0 0 0 0;
         margin:0 0 0 0;
         height:inherit;
+        font-size:max(1.5vw,18px);
     }
     .title {
         white-space: nowrap;

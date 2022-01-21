@@ -1,25 +1,40 @@
 import type { 
-
+    AlarmsType,
     Alarms,AlarmsJSON, 
     DayAlarms, DayAlarmsJSON,
-    Reminder,
-    YearAlarms,MonthAlarms, 
+    Reminder, YearAlarms,MonthAlarms, 
 } from "./Types"
 
 import { getDaysInMonth, range } from "../../../Shared/Utils"; 
-
+import { writable } from "svelte/store";
+import type { Writable } from "svelte/store";
 export class Controller {
-    private alarms:Alarms
-    public state:string
+    public alarms:Alarms
+    public debug:boolean
+    public listeners:{
+        alarms:Array<()=>void>
+    }
+    private fireListeners:()=>void
 
-    constructor(){
-       this.alarms = new Map();
-        this.state = "Loading"
+    //do not update state in a ASYNC function with i could add rustlike rule to state that u
+    //do that and the app stops syncing its dates correctly
+    public state:Writable<"loaded"|"loading"|"updating"|"updated">
+
+    constructor(link:string){
+        
+        this.listeners = {alarms:[]};
+        this.fireListeners = () =>{ this.listeners.alarms.forEach(listener=>listener()) }
+        this.debug = false;
+        this.importAlarms(link).then(alarms=>{
+            this.alarms = alarms;
+            this.fireListeners()
+        });
+        
     }
 
-    setReminder(year:number,month:number,day:number,wsName:string,reminder:Reminder,index?:number){
+    setReminder(year:number,month:number,day:number,wsName:string,reminder:Reminder,index?:number):void{
         if(this.alarms.get(year)){
-            let dayAlarms = this.getDayAlarms(year,month,day);
+            let dayAlarms = this.getAlarm(year,month,day);
             if(typeof dayAlarms !== "string"){
                 let wsAlarms = dayAlarms.get(wsName)
                 if(wsAlarms){ // when there is a ws u put the reminder in
@@ -36,8 +51,7 @@ export class Controller {
                 }
                 dayAlarms.set(wsName,wsAlarms)
             }else {
-                console.log(`year:${year},month:${month} or day:${day} `)
-                return 
+                dayAlarms = new Map([ [ wsName,[reminder] ] ]); 
             }
             let yearlyAlarms = this.alarms.get(year);
             yearlyAlarms[month][day] = dayAlarms;
@@ -47,22 +61,56 @@ export class Controller {
             yearAlarms[month] = new Map([ [ wsName,[reminder] ] ])
             this.alarms.set(year,yearAlarms)
         }
+        this.fireListeners()
     }
     
-    getDayAlarms(year:number,month:number,day:number):DayAlarms|string{
+    
+    getAlarm(year:number,month?:number,day?:number,wsName?:string,reminder?:string|number):AlarmsType{
         let yearlyAlarms = this.alarms.get(year)
         if(yearlyAlarms){
-            let monthlyAlarms:MonthAlarms<DayAlarms> = yearlyAlarms[month];
-            if(monthlyAlarms){
-                let dailyAlarms:DayAlarms|undefined = monthlyAlarms[day]
-                if(dailyAlarms){
-                    return dailyAlarms
+            if(month){
+                let monthlyAlarms:MonthAlarms<DayAlarms> = yearlyAlarms[month];
+                if(monthlyAlarms){
+                    if(day){
+                        let dailyAlarms:DayAlarms|undefined = monthlyAlarms[day]
+                        if(dailyAlarms){
+                            if(wsName){
+                                let wsAlarms = dailyAlarms.get(wsName)
+                                if(wsAlarms){
+                                    if(reminder !== undefined){
+                                        let returnAlarm:Reminder;
+                                        if(typeof reminder === "string"){
+                                            wsAlarms.forEach(alarm =>{
+                                                alarm.name === reminder ? returnAlarm = alarm : "alarm not present"
+                                            })
+                                        }else{
+                                           wsAlarms[reminder] ? returnAlarm = wsAlarms[reminder] : "alarm not present"
+                                        }
+                                        return returnAlarm
 
+                                    }else{
+                                        return wsAlarms 
+                                    }
+                                }else{
+                                    "workspace has no alarms"
+                                }
+
+                            }else{
+                                return dailyAlarms
+                            }
+
+                        }else {
+                            return "day has no alarms"
+                        }
+                    }else {
+                        return monthlyAlarms
+                    }
                 }else {
-                    return "day has no alarms"
+                    return "month has no alarms"
                 }
+
             }else {
-                return "month has no alarms"
+                return yearlyAlarms 
             }
 
         }else {
@@ -74,8 +122,7 @@ export class Controller {
 
 
 
-    async importString(URL:string):Promise<Alarms>{
-        this.state = "Loading";
+    async importAlarms(URL:string):Promise<Alarms>{
         let data_uninit:AlarmsJSON = await fetch(URL).then(string=>string.json());
         let AlarmData:Alarms = new Map();
 
@@ -109,10 +156,10 @@ export class Controller {
                     yearAlarms[monthNumber] = undefined;
                 }
             })
-            AlarmData.set(year,yearAlarms);
+            AlarmData.set(typeof year === "string"? parseInt(year):year,yearAlarms);
+            
 
         })
-        this.state = "Loaded";
         return AlarmData;
     }
 }
