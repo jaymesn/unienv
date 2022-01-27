@@ -1,0 +1,33 @@
+top level stuff:
+    -Calendar + dayview working
+    -workspaces w/ just text/imgs & video showing 
+    -TG w/ different data layouts
+
+
+currently:
+
+core( things that the MVP need to be done ):
+    monthView:
+        -allow for u to filter via workspace,time,due-date,ETC 
+
+        -add a set alarms modal when clicking on the "add an alarm +" component 
+
+                                   -or-
+
+        -use svelte native state management lib for this and get it 
+        working properly since last time it didn't work so well;
+    ;
+    dayView:
+        -allow for u to filter via workspace,time,due-date,ETC.
+
+        -allow for u to see ur alarms from a 24hr perspective
+        with times blocked out.
+                        -or-/-and-
+        -see it from a selected hr range perspective where it shows u alarms in
+        that hour.
+    ; 
+;
+polish( things for me to add other people to this ):
+    add a overflow watcher for div.alarm in file Day.svelte and make it change based on that
+    add a loading spinner to the Day Component div titled .place-holder;
+    

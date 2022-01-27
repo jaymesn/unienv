@@ -6,14 +6,12 @@ export interface WorkspaceJSON {
 }
 export interface WSContainerJSON {
     title?:string
-    description?:string
     component:{
         type:"TG"|"Note"|"Root"
         data:WSCdata<null>
     },
     child?:WSCchildJSON
 }
-
 
 interface WSCdata<T> {
     "generic":T
@@ -22,7 +20,6 @@ interface WSCdata<T> {
 
 interface WSContainer {   
     title?:string
-    description?:any //** THIS AMOUNTS TO A REACTIVE TEXT VALUE 
     component:{
         type:"TG"|"Note"|"Root"
         data:WSCdata<null> //** THIS IS THE SVELTE APP data specific to each type 

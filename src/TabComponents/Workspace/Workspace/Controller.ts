@@ -12,7 +12,6 @@ export class Controller {
         function initRecursiveWSC(InputContainer:WSContainerJSON):WSContainer {
             let OutputContainer:WSContainer = {
                 title:InputContainer.title,
-                description:InputContainer.description,
                 component:InputContainer.component,
             }
 

@@ -4,6 +4,7 @@
     import DayView from "../DayView.svelte";
     import { dateToDayNum, Names ,getNumEnd, getDayNum} from "../../../Shared/Utils";
     import type { Controller } from "./Controller"
+    import { state } from "./Controller"
     export let ctrl:Controller;
 
     let view:"Day"|"Month" = "Month";
@@ -21,20 +22,29 @@
     $: dateNum = dateNum;
 
     let dayNum = date.getDay();
-    $: dayNum = dayNum;
+    $: dayNum = dayNum; // makes it so that 0-7 is mon-sun
 
     /* {Names.month[monthNum -1] } { Names.day[dateNum].slice(0,3)}, {dateNum+getNumEnd(dateNum)} {yearNum}*/
+    const handleViewChange = (event) => {
+        if(view === "Month"){
+            view = "Day"
+        }else {
+            view = "Month"
+        }
+        state.alarms.update(_=> "all");
+
+    }
 </script>
 
 <div class="calendar">
     <div class="bar">
     <div></div>
        <p class="title">
-            {Names.month[monthNum -1] } { Names.day[dayNum - 1].slice(0,3)}, {dateNum+getNumEnd(dateNum)} {yearNum}
+            {Names.month[monthNum -1] } { Names.day[dayNum].slice(0,3)}, {dateNum+getNumEnd(dateNum)} {yearNum}
         </p>
 
 
-        <button class="view-toggle" on:click={event=>view === "Month" ? view = "Day": view = "Month"}>{view}</button>
+        <button class="view-toggle" on:click={handleViewChange}>{view === "Month" ? "Day view":"Month view"}</button>
                 <!-- Redo the bar component since it was dogshit last time -->
   
     </div>
@@ -49,6 +59,7 @@
 
 <style>
     .view-toggle {
+        overflow:hidden;
         padding:0 0 0 0;
         margin:0 0 0 0;
         height:inherit;

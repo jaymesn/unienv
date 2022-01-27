@@ -3,31 +3,35 @@ import type {
     Alarms,AlarmsJSON, 
     DayAlarms, DayAlarmsJSON,
     Reminder, YearAlarms,MonthAlarms, 
+    CalendarStateObject, CalendarState
 } from "./Types"
 
-import { getDaysInMonth, range } from "../../../Shared/Utils"; 
+import type { ComponentSettings } from "../../Types.d"
+import { dateToDayNum, getDaysInMonth, range } from "../../../Shared/Utils"; 
 import { writable } from "svelte/store";
 import type { Writable } from "svelte/store";
-export class Controller {
-    public alarms:Alarms
-    public debug:boolean
-    public listeners:{
-        alarms:Array<()=>void>
-    }
-    private fireListeners:()=>void
 
+export const state:CalendarStateObject = {
+    alarms:writable(["all","static"])
+}; 
+export class Controller implements ComponentSettings {
+    private alarms:Alarms
+    private alarmAutoSave:CalendarState
+    public debug:boolean
+    public settings
     //do not update state in a ASYNC function with i could add rustlike rule to state that u
     //do that and the app stops syncing its dates correctly
-    public state:Writable<"loaded"|"loading"|"updating"|"updated">
 
     constructor(link:string){
-        
-        this.listeners = {alarms:[]};
-        this.fireListeners = () =>{ this.listeners.alarms.forEach(listener=>listener()) }
+        let localSettings = localStorage.getItem("settings");
+        state.alarms.subscribe((newState:CalendarState) => {
+
+        });
+
         this.debug = false;
         this.importAlarms(link).then(alarms=>{
             this.alarms = alarms;
-            this.fireListeners()
+            state.alarms.set(["all","import"]);
         });
         
     }
@@ -61,7 +65,9 @@ export class Controller {
             yearAlarms[month] = new Map([ [ wsName,[reminder] ] ])
             this.alarms.set(year,yearAlarms)
         }
-        this.fireListeners()
+        let data = new Date()
+
+        state.alarms.set([day,"update"])
     }
     
     
@@ -100,7 +106,7 @@ export class Controller {
                             }
 
                         }else {
-                            return "day has no alarms"
+                            return `day has no alarms ` 
                         }
                     }else {
                         return monthlyAlarms
@@ -120,10 +126,8 @@ export class Controller {
     
 
 
-
-
-    async importAlarms(URL:string):Promise<Alarms>{
-        let data_uninit:AlarmsJSON = await fetch(URL).then(string=>string.json());
+    UnSerializeAlarms(data:AlarmsJSON):Alarms{
+        let data_uninit = data;
         let AlarmData:Alarms = new Map();
 
 
@@ -162,4 +166,39 @@ export class Controller {
         })
         return AlarmData;
     }
+    
+    SerializeAlarms(data:Alarms):AlarmsJSON{
+        let data_uninit:AlarmsJSON = [];
+        [...data].forEach(item=>{
+            let yearAlarms_uninit:YearAlarms<DayAlarmsJSON>={};
+            let [yearNum,yearAlarms] = item;
+            range(12).forEach(monthNum=>{
+                let monthAlarms_uninit:MonthAlarms<DayAlarmsJSON> ={};
+                let monthAlarms = yearAlarms[monthNum];
+                if(monthAlarms){
+                    range( getDaysInMonth(monthNum) ).forEach(dayNum => {
+                        let dayAlarms = monthAlarms[dayNum]
+                        console.log(dayNum,dayAlarms);
+                        if(dayAlarms){
+                            let dayAlarms_uninit:DayAlarmsJSON = []  ;
+                            [...dayAlarms].forEach(reminder => dayAlarms_uninit.push(reminder) )
+                            monthAlarms_uninit[monthNum] =  dayAlarms_uninit;
+                        }
+                    })
+                    yearAlarms_uninit[monthNum] = monthAlarms_uninit;
+                }
+
+            })
+            data_uninit.push([yearNum,yearAlarms_uninit])
+        })
+        return data_uninit;
+
+    }
+
+    async importAlarms(URL:string):Promise<Alarms>{
+        let data_uninit:AlarmsJSON = await fetch(URL).then(string=>string.json());
+        let data_init = this.UnSerializeAlarms(data_uninit);
+        return data_init;
+
+   }
 }

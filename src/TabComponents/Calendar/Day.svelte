@@ -1,45 +1,56 @@
 <script lang="ts">
-    import type {Alarms, DayAlarms } from "./Calendar/Types";
+    import type { CalendarState,DayAlarms } from "./Calendar/Types";
     import type { Controller } from "./Calendar/Controller"
-    import {getDaysInMonth,Names, getNumEnd, dateToDayNum } from "../../Shared/Utils"
+    import { getNumEnd } from "../../Shared/Utils"
+    import { state } from "./Calendar/Controller"
+    import { onDestroy } from "svelte";
+import App from "../../App.svelte";
+import Browser from "../Workspace/Browser.svelte";
+import Component from "./Calendar/Component.svelte";
 
     export let ctrl:Controller;
     export let dayNum:number;
     export let monthNum:number
     export let yearNum:number
 
-
     let date = new Date();
-    
     let dayAlarms:DayAlarms = new Map();
-    let state:"loaded"|"loading"|"updating"|"updated";
+    
+    let addAlarmToggle:boolean = false;
+    $: addAlarmToggle = addAlarmToggle;
 
-    // MAKE A CLEAN UP METHOD FOR
-    ctrl.listeners.alarms.push(
-        ()=>{
-            dayAlarms = ctrl.getAlarm(yearNum,monthNum,dayNum);
+    state.alarms.subscribe( (newState:CalendarState)=> { 
+        if(newState[0] === dayNum || newState[1] === "import"){
+            if(ctrl.getAlarm(yearNum,monthNum,dayNum) !== "day has no alarms "){
+                $: dayAlarms = ctrl.getAlarm(yearNum,monthNum,dayNum);
+                console.log(dayAlarms);
+            }
         }
-    )
+    })
 
-    const handleClick = () => {
-        ctrl.setReminder(yearNum,monthNum,dayNum,"ws3",
-        {
-            "icon":"white",
-            "pathInWorkspace":".",
-            "name":`${yearNum}:${monthNum}:${dayNum}`
-        })
+    function handleClick(e){
+        ctrl.setReminder(
+            yearNum,
+            monthNum,
+            dayNum,
+            "ws3",
+            {
+                "icon":"red",
+                "name":`${dayNum}:${(new Date()).getMilliseconds()}`,
+                "pathInWorkspace":"."
+            }
+        )
     }
-
+    
+  
 </script>
-
-<div class="day">
+<div class="day" >
     <div class="day-title">
 
         <p class="day-number">{  dayNum+getNumEnd(dayNum)}</p>
 
     </div>
     <div class="alarms">
-        {#if typeof dayAlarms !== "string"}
             {#each [...dayAlarms] as [wsName,wsAlarms]} 
                 {#each wsAlarms as alarm}
 
@@ -57,27 +68,17 @@
                 {/each}
 
             {/each}
+            {#if [...dayAlarms].length !== 0}
+                    <button on:click={handleClick} class="ws-add-alarm">+ alarm</button>
+            {:else}
+                    <button on:click={handleClick} class="ws-add-alarm-2">+</button>
+            {/if}
+    <div/>
 
-        {/if}
-        <button on:click={handleClick} class="ws-add-alarm">
-            <p>add an <br/>alarm +</p>
-        </button>
-       
-    </div>
-
-    
+</div>
 </div>
 
 <style>
-    .place-holder { 
-        width:100%; 
-        height:100%; 
-        display:flex;
-        flex-direction:column;
-        justify-content: center;
-        align-items:center;
-    }
-    .place-holder p { font-size:3vh; }
     .day {
         /* the 1 represents bar-height and 5 is the amount of row-gaps*/
         --black-dark:rgb(29 ,29 ,29,100);
@@ -98,34 +99,56 @@
     }
 
     .alarms {
-        font-size:max(1.5vw,1.5vh);
+        display:flex;
+        flex-direction:column;
+        font-size:max(1.5vw,2vh);
         margin-top:auto;
         margin-bottom:auto;
         height:80%;
         width: 90%;
         margin:auto;
         overflow: scroll;
+        --alarm-border-width:.625vh;
 
     }
+    
     .alarm {
         width: fit-content;
-        border:solid black .625vh;
+        border:solid black var(--alarm-border-width);
         border-radius: 4px;
         white-space: nowrap;
         display: flex;
         align-items:center;
-        margin-top:5px;
+        margin-top:3px;
     }
     .ws-add-alarm {
+        border:solid grey var(--alarm-border-width);
+        background-color:var(--black-light);
+        
+        color:white;
         margin-top:5px;
         margin-bottom:5px;
         padding:0 0 0 0 ;
         width: 100%;
-        border:solid grey .625vh;
-        background-color:grey;
         border-radius: 4px;
     
     }
+
+    .ws-add-alarm-2 {
+        border:solid grey var(--alarm-border-width);
+        background-color: var(--black-light);
+
+        padding: 0 0 0 0;
+        margin: 0 0 0 0;
+        border: 0 0 0 0;
+        justify-self:center;
+        align-self:center;
+        width:100%;
+        height:95%;
+        font-size:6vh;
+        color:white;
+    }
+    
     
 
     .ws-icon {

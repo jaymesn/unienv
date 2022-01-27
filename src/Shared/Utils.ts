@@ -1,6 +1,6 @@
 export const Names = {
     month:[ "January", "February", "March", "April", "May", "June","July", "August", "September", "October", "November", "December" ],
-    day:["Monday ","Tuesday ","Wednesday ","Thursday ","Friday ","Saturday ","Sunday "]
+    day:["Sunday","Monday ","Tuesday ","Wednesday ","Thursday ","Friday ","Saturday "]
 }
 
 

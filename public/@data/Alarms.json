@@ -2,30 +2,13 @@
     ["2022",{
         "1":{
             "1":[
-                ["ws1",[
+                ["ws3",[
 					{
 						"pathInWorkspace":"",
 						"name":"hello",
 						"icon":"pink"
-					},	
-					{
-						"pathInWorkspace":"",
-						"name":"hello",
-						"icon":"blue"
-					}
-				]],	
-				["ws2",[
-					{
-						"pathInWorkspace":"",
-						"name":"hello2",
-						"icon":"red"
-					},	
-					{
-						"pathInWorkspace":"",
-						"name":"hello2",
-						"icon":"rgb(100,2,100)"
-					}
-				]]
+					}	
+				]]	
             ]
         }
     }]

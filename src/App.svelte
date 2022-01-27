@@ -10,6 +10,7 @@
 	
 	let calendarCTRL = new CalendarController("./@data/Alarms.json");	
 	let workspaceCTRL = new WorkspaceController();	
+
 	let selected = 0;
 	(window as any).ctrl = calendarCTRL; 
 </script>

@@ -1,3 +1,7 @@
+type CalendarState = ["all"|number,"static"|"update"|"import"]
+export interface CalendarStateObject {
+    alarms:Writable<CalendarState>
+}
 export type AlarmsType = Reminder|Reminder[]|DayAlarms|MonthAlarms|YearAlarms|Alarms;
 type yy = number
 type mm = number
