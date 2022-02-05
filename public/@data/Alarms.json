@@ -1,15 +1,70 @@
 [
-    ["2022",{
-        "1":{
-            "1":[
-                ["ws3",[
-					{
-						"pathInWorkspace":"",
-						"name":"hello",
-						"icon":"pink"
-					}	
-				]]	
+    [
+        2022,
+        [
+            [
+                2,
+                [
+                    [
+                        1,
+                        [
+                            [
+                                "ws3",
+                                [{
+                                    "pathInWorkspace":"./test",
+                                    "name":"test alarm",
+                                    "icon":"?" 
+                                }]
+                            ],
+                            [ 
+                                "ws2",
+                                [{
+                                    "pathInWorkspace":"./test",
+                                    "name":"test alarm2",
+                                    "icon":"?" 
+                                }]
+ 
+                            ]
+
+                        ]
+                    ]
+                ]
             ]
-        }
-    }]
+            
+        ]
+    ],
+    [
+        2023,
+        [
+            [
+                2,
+                [
+                    [
+                        1,
+                        [
+                            [
+                                "ws3",
+                                [{
+                                    "pathInWorkspace":"./test",
+                                    "name":"test alarm",
+                                    "icon":"?" 
+                                }]
+                            ],
+                            [ 
+                                "ws2",
+                                [{
+                                    "pathInWorkspace":"./test",
+                                    "name":"test alarm2",
+                                    "icon":"?" 
+                                }]
+ 
+                            ]
+
+                        ]
+                    ]
+                ]
+            ]
+            
+        ]
+    ]
 ]
