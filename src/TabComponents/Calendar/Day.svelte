@@ -1,12 +1,12 @@
 <script lang="ts">
-    import type { CalendarState,DayAlarms } from "./Calendar/Types";
+    import type { CalendarState, DayAlarms } from "./Calendar/Types";
     import type { Controller } from "./Calendar/Controller"
     import { getNumEnd } from "../../Shared/Utils"
     import { state } from "./Calendar/Controller"
     import { onDestroy } from "svelte";
-import App from "../../App.svelte";
-import Browser from "../Workspace/Browser.svelte";
-import Component from "./Calendar/Component.svelte";
+    import App from "../../App.svelte";
+    import Browser from "../Workspace/Browser.svelte";
+    import Component from "./Calendar/Component.svelte";
 
     export let ctrl:Controller;
     export let dayNum:number;
@@ -14,35 +14,27 @@ import Component from "./Calendar/Component.svelte";
     export let yearNum:number
 
     let date = new Date();
-    let dayAlarms:DayAlarms = new Map();
-    
-    let addAlarmToggle:boolean = false;
-    $: addAlarmToggle = addAlarmToggle;
+    let dayAlarms:DayAlarms = new Map();    
+    let addAlarmToggle:boolean = false; $: addAlarmToggle = addAlarmToggle;
+    state.alarms.subscribe(newState=>{
+        // when  local component data NEEDS to be updated 
+        if(
+            newState[0] === "all" && newState[1] === "update" || 
+            newState[0] === "all" && newState[1] === "import" ||
+            newState[0] === dayNum && newState[1] === "update" ||
+            newState[0] === dayNum && newState[1] === "import" 
+        ){
+            // for some reason this failes the 
+            // array checker figure this out
+            ctrl.getAlarm(2022,90)
 
-    state.alarms.subscribe( (newState:CalendarState)=> { 
-        if(newState[0] === dayNum || newState[1] === "import"){
-            if(ctrl.getAlarm(yearNum,monthNum,dayNum) !== "day has no alarms "){
-                $: dayAlarms = ctrl.getAlarm(yearNum,monthNum,dayNum);
-                console.log(dayAlarms);
-            }
+        }else {
         }
-    })
+    })    
 
-    function handleClick(e){
-        ctrl.setReminder(
-            yearNum,
-            monthNum,
-            dayNum,
-            "ws3",
-            {
-                "icon":"red",
-                "name":`${dayNum}:${(new Date()).getMilliseconds()}`,
-                "pathInWorkspace":"."
-            }
-        )
-    }
     
-  
+
+    
 </script>
 <div class="day" >
     <div class="day-title">
@@ -51,28 +43,28 @@ import Component from "./Calendar/Component.svelte";
 
     </div>
     <div class="alarms">
-            {#each [...dayAlarms] as [wsName,wsAlarms]} 
-                {#each wsAlarms as alarm}
+        <!-- FIX THIS HTML SO THAT WHEN U LOOP OVER dayAlarms it works -->
+        {#each [...dayAlarms] as wsAlarmArr} 
+            {#each wsAlarmArr as wsAlarm}
+                    <!-- <div class="alarm"> -->
+                        <!-- {#if typeof alarm.icon === "string"}-->
+                            <!-- <div class="ws-icon" style="--ws-colour:{alarm.icon};"></div>  -->
+                            <!-- <p class="ws-alarm-text">-->
+                                <!-- {alarm.name}-->
+                            <!-- </p> -->
+                        <!-- {:else}-->
+                            <!-- <div class="ws-icon" style="--ws-colour:grey;"></div>  -->
+                        <!-- {/if}-->
 
-                    <div class="alarm">
-                        {#if typeof alarm.icon === "string"}
-                            <div class="ws-icon" style="--ws-colour:{alarm.icon};"></div>  
-                            <p class="ws-alarm-text">
-                                {alarm.name}
-                            </p> 
-                        {:else}
-                            <div class="ws-icon" style="--ws-colour:grey;"></div>  
-                        {/if}
-
-                    </div>
-                {/each}
-
+                    <!-- </div>-->
+            
+            <!--{#if [...dayAlarms].length !== 0}-->
+                    <!--<button on:click={handleClick} class="ws-add-alarm">+ alarm</button>-->
+            <!--{:else}-->
+                    <!--<button on:click={handleClick} class="ws-add-alarm-2">+</button>-->
+            <!--{/if}-->
             {/each}
-            {#if [...dayAlarms].length !== 0}
-                    <button on:click={handleClick} class="ws-add-alarm">+ alarm</button>
-            {:else}
-                    <button on:click={handleClick} class="ws-add-alarm-2">+</button>
-            {/if}
+        {/each}
     <div/>
 
 </div>

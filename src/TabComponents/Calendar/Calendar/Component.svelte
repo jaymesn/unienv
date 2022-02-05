@@ -31,7 +31,6 @@
         }else {
             view = "Month"
         }
-        state.alarms.update(_=> "all");
 
     }
 </script>

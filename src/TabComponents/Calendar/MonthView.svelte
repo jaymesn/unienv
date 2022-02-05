@@ -1,8 +1,6 @@
 <script lang="ts">
 
     import type { 
-        day29type, day30type,
-        day31type,
         DayAlarms ,YearAlarms
     } from "./Calendar/Types";
 
@@ -29,13 +27,13 @@
 <style>
     .view-month {
 
-    --row-size:calc(  86vh / 5 );
+    --row-size:calc(  86vh / 4 );
     --column-size:calc(  86vw / 7 );
 
 
     display: grid;
     grid-template-columns: repeat(7, var(--column-size));
-    grid-template-rows: repeat(5, var(--row-size) );
+    grid-template-rows: repeat(4, var(--row-size) );
     grid-row-gap:0.5vh;
     grid-column-gap:0.5vw;
 

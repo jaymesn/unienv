@@ -1,9 +1,11 @@
 import type { 
-    AlarmsType,
-    Alarms,AlarmsJSON, 
-    DayAlarms, DayAlarmsJSON,
-    Reminder, YearAlarms,MonthAlarms, 
-    CalendarStateObject, CalendarState
+    YearAlarms,YearAlarmsJSON,
+    MonthAlarms,MonthAlarmsJSON,
+    DayAlarms,DayAlarmsJSON,
+    WSAlarms,WSAlarmsJSON,
+    Reminder,
+    CalendarState,
+    CalendarStateObject,
 } from "./Types"
 
 import type { ComponentSettings } from "../../Types.d"
@@ -15,8 +17,8 @@ export const state:CalendarStateObject = {
     alarms:writable(["all","static"])
 }; 
 export class Controller implements ComponentSettings {
-    private alarms:Alarms
-    private alarmAutoSave:CalendarState
+    private alarms:YearAlarms
+    private alarmCalState:Writable<CalendarStateObject>
     public debug:boolean
     public settings
     //do not update state in a ASYNC function with i could add rustlike rule to state that u
@@ -24,10 +26,6 @@ export class Controller implements ComponentSettings {
 
     constructor(link:string){
         let localSettings = localStorage.getItem("settings");
-        state.alarms.subscribe((newState:CalendarState) => {
-
-        });
-
         this.debug = false;
         this.importAlarms(link).then(alarms=>{
             this.alarms = alarms;
@@ -36,168 +34,158 @@ export class Controller implements ComponentSettings {
         
     }
 
-    setReminder(year:number,month:number,day:number,wsName:string,reminder:Reminder,index?:number):void{
-        if(this.alarms.get(year)){
-            let dayAlarms = this.getAlarm(year,month,day);
-            if(typeof dayAlarms !== "string"){
-                let wsAlarms = dayAlarms.get(wsName)
-                if(wsAlarms){ // when there is a ws u put the reminder in
-                    if(index){// when there a specifed index
-                        let half1 = wsAlarms.slice(0,index)
-                        let half2 = wsAlarms.slice(index)
-                        wsAlarms = [...half1,reminder,...half2];
-                    }else{   //  whern there isn't
-                        wsAlarms.push(reminder)
-                    }
-                }else {      // we make a remidner array if the specified 
-                            //workspace doesn't already exist instead of erroring out
-                    wsAlarms = [reminder] 
-                }
-                dayAlarms.set(wsName,wsAlarms)
-            }else {
-                dayAlarms = new Map([ [ wsName,[reminder] ] ]); 
+    setAlarm(year:number,month:number,day:number,wsName:string,reminder:Reminder,index?:number):void {
+        let wsReminders = this.alarms.get(year)?.get(month)?.get(day)?.get(wsName)
+        if(wsReminders){
+            if(index){
+                let newWsReminders = 
+                [
+                    ...wsReminders.slice(index),
+                    reminder,
+                    ...wsReminders.slice(index+1,wsReminders.length)
+                ]
+               this.alarms.get(year).get(month).get(day).set(wsName,newWsReminders);
+            }else{
+                wsReminders.push(reminder)
+                this.alarms.get(year).get(month).get(day).set(wsName,wsReminders);
             }
-            let yearlyAlarms = this.alarms.get(year);
-            yearlyAlarms[month][day] = dayAlarms;
-            this.alarms.set(year,yearlyAlarms)
-        }else { // if their are no alarms then we add a year and the alarm
-            let yearAlarms:YearAlarms<DayAlarms> = {} 
-            yearAlarms[month] = new Map([ [ wsName,[reminder] ] ])
-            this.alarms.set(year,yearAlarms)
         }
-        let data = new Date()
-
         state.alarms.set([day,"update"])
     }
     
     
-    getAlarm(year:number,month?:number,day?:number,wsName?:string,reminder?:string|number):AlarmsType{
-        let yearlyAlarms = this.alarms.get(year)
-        if(yearlyAlarms){
-            if(month){
-                let monthlyAlarms:MonthAlarms<DayAlarms> = yearlyAlarms[month];
-                if(monthlyAlarms){
-                    if(day){
-                        let dailyAlarms:DayAlarms|undefined = monthlyAlarms[day]
-                        if(dailyAlarms){
-                            if(wsName){
-                                let wsAlarms = dailyAlarms.get(wsName)
-                                if(wsAlarms){
-                                    if(reminder !== undefined){
-                                        let returnAlarm:Reminder;
-                                        if(typeof reminder === "string"){
-                                            wsAlarms.forEach(alarm =>{
-                                                alarm.name === reminder ? returnAlarm = alarm : "alarm not present"
-                                            })
-                                        }else{
-                                           wsAlarms[reminder] ? returnAlarm = wsAlarms[reminder] : "alarm not present"
-                                        }
-                                        return returnAlarm
+    getAlarm<T>(year?:number,month?:number,day?:number,wsName?:string,reminderName?:string|number):T{
 
-                                    }else{
-                                        return wsAlarms 
-                                    }
-                                }else{
-                                    "workspace has no alarms"
-                                }
+        // find out where the check is going wrong over here
+        // * and u didn't debug as u built this too!
 
-                            }else{
-                                return dailyAlarms
-                            }
+        let checkArray = [
+            typeof year === "number",
+            typeof month === "number",
+            typeof day === "number",
+            typeof wsName === "number",
+            (typeof reminderName === "string" || typeof reminderName === "number") ? typeof reminderName : false
+        ]
 
-                        }else {
-                            return `day has no alarms ` 
-                        }
-                    }else {
-                        return monthlyAlarms
-                    }
+        const findName = (reminderArr:Reminder[]):Reminder|undefined => {
+            let len = reminderArr.length;
+            for( let i = 0 ; i < len ; i++ ){
+                if(reminderArr[i].name === reminderName){
+                    return reminderArr[i]
+
                 }else {
-                    return "month has no alarms"
-                }
+                    return
 
-            }else {
-                return yearlyAlarms 
+                }
             }
-
-        }else {
-            return "year has no alarms"
         }
+
+        switch (checkArray) {
+
+            case [true,true,true,true,"string"]:
+                return findName(this.alarms.get(year)?.get(month)?.get(day)?.get(wsName)) as unknown as T;
+                break;
+
+            case [true,true,true,true,"number"]:
+                return this.alarms.get(year)?.get(month)?.get(day)?.get(wsName)[reminderName] 
+                break;
+
+            case [true,true,true,true,false]:
+                return this.alarms.get(year)?.get(month)?.get(day)?.get(wsName) as unknown as T;
+                break; 
+
+            case [true,true,true,false,false]:
+                return this.alarms.get(year)?.get(month)?.get(day) as unknown as T;
+                break;
+
+            case [true,true,false,false,false]:
+
+                return this.alarms.get(year)?.get(month) as unknown as T;
+                break;
+
+            case [true,false,false,false,false]:
+                return this.alarms.get(year) as unknown as T;
+                break;
+
+            case [false,false,false,false,false]:
+                return this.alarms as unknown as T;
+                break;
+
+            default:
+                console.log("fail");
+                return; 
+                break;
+        }
+
+
     }
     
+     
 
+    UnSerializeAlarm(yearAlarmsJSON:YearAlarmsJSON):YearAlarms{
+        // left this unsafe since its unconventional 
+        // when done safely
+       
+        let yearAlarms_uninit:[number,MonthAlarms][] = yearAlarmsJSON.map(Entry=>{
 
-    UnSerializeAlarms(data:AlarmsJSON):Alarms{
-        let data_uninit = data;
-        let AlarmData:Alarms = new Map();
+            let [yearNum,monthAlarmsJSON] = Entry; 
+            let monthAlarms_uninit:[number,DayAlarms][] = monthAlarmsJSON.map(Entry => {
 
+                let [ monthNum,dayAlarmsJson] = Entry;
+                let dayAlarms_uninit:[number,WSAlarms][] = dayAlarmsJson.map(Entry=>{
 
-        // looping through each YearAlarm
-        data_uninit.forEach(item => {    
-            let [year,yearAlarmsJSON] = item;
-            let yearAlarms:YearAlarms<DayAlarms>={}; 
+                    let [dayNum,wsAlarmsJson] = Entry;
+                    return [dayNum, new Map(wsAlarmsJson)];
 
-            range(12).forEach(monthNumber => {
-            
-                // first check to see if the month has alarms
-                if(yearAlarmsJSON[monthNumber]){
+                })
+                return [monthNum,new Map(dayAlarms_uninit)];
 
-                    // we assign a object to put alarms in that month 
-                    yearAlarms[monthNumber] = {};
-
-                    range( getDaysInMonth(monthNumber) ).forEach(dayNumber => {
-
-                        yearAlarms[monthNumber][dayNumber] = undefined;
-                        if(yearAlarmsJSON[monthNumber][dayNumber]){
-                        
-                            //assign the iterable DayAlarmsJSON as the argument for a new DayAlarms
-                            yearAlarms[monthNumber][dayNumber] = new Map(yearAlarmsJSON[monthNumber][dayNumber]);
-
-                        }
-
-                    })
-                }else {
-                    // since it doesn't , the alarms for the month is left undefined
-                    yearAlarms[monthNumber] = undefined;
-                }
-            })
-            AlarmData.set(typeof year === "string"? parseInt(year):year,yearAlarms);
-            
-
+            }) 
+            return [yearNum,new Map(monthAlarms_uninit)];
         })
-        return AlarmData;
-    }
-    
-    SerializeAlarms(data:Alarms):AlarmsJSON{
-        let data_uninit:AlarmsJSON = [];
-        [...data].forEach(item=>{
-            let yearAlarms_uninit:YearAlarms<DayAlarmsJSON>={};
-            let [yearNum,yearAlarms] = item;
-            range(12).forEach(monthNum=>{
-                let monthAlarms_uninit:MonthAlarms<DayAlarmsJSON> ={};
-                let monthAlarms = yearAlarms[monthNum];
-                if(monthAlarms){
-                    range( getDaysInMonth(monthNum) ).forEach(dayNum => {
-                        let dayAlarms = monthAlarms[dayNum]
-                        console.log(dayNum,dayAlarms);
-                        if(dayAlarms){
-                            let dayAlarms_uninit:DayAlarmsJSON = []  ;
-                            [...dayAlarms].forEach(reminder => dayAlarms_uninit.push(reminder) )
-                            monthAlarms_uninit[monthNum] =  dayAlarms_uninit;
-                        }
-                    })
-                    yearAlarms_uninit[monthNum] = monthAlarms_uninit;
-                }
+        
 
-            })
-            data_uninit.push([yearNum,yearAlarms_uninit])
-        })
-        return data_uninit;
+        
+        return new Map(yearAlarms_uninit)
+
+        
+
+        "0"
+        "010"
+        "01010"
+
+        /* 
+        go from entries to maps
+        so  . . . 
+        [
+            [ year , [
+                [ month , [
+                    [ day , [
+                        [ wsName , string[] ]
+                    ]]
+                ] ]
+            ] ]
+        ]
+
+        to . . . 
+
+        Map<year,
+            Map<month,
+                Map<day,
+                    Map< wsName , string[] >
+                >
+            >
+        >
+
+        */
+
+
 
     }
 
-    async importAlarms(URL:string):Promise<Alarms>{
-        let data_uninit:AlarmsJSON = await fetch(URL).then(string=>string.json());
-        let data_init = this.UnSerializeAlarms(data_uninit);
+    async importAlarms(URL:string):Promise<YearAlarms>{
+        let data_uninit:YearAlarmsJSON = await fetch(URL).then(string=>string.json());
+        let data_init = this.UnSerializeAlarm(data_uninit);
         return data_init;
 
    }
