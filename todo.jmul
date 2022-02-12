@@ -1,33 +1,69 @@
-top level stuff:
-    -Calendar + dayview working
-    -workspaces w/ just text/imgs & video showing 
-    -TG w/ different data layouts
 
+TabComponents:
+    TaskMonitor:
+        things that help ppl w/ adhd
 
-currently:
+    Calculator:
+        basical calculator but be able to handle . . .
+        dates[yy,mm,dd], times[hh,mm,ss] ,temps(C -> F) && normal calculations
+        also the temporary storing of results in history presented well 
 
-core( things that the MVP need to be done ):
-    monthView:
-        -allow for u to filter via workspace,time,due-date,ETC 
-
-        -add a set alarms modal when clicking on the "add an alarm +" component 
-
-                                   -or-
-
-        -use svelte native state management lib for this and get it 
-        working properly since last time it didn't work so well;
-    ;
-    dayView:
-        -allow for u to filter via workspace,time,due-date,ETC.
-
-        -allow for u to see ur alarms from a 24hr perspective
-        with times blocked out.
-                        -or-/-and-
-        -see it from a selected hr range perspective where it shows u alarms in
-        that hour.
-    ; 
-;
-polish( things for me to add other people to this ):
-    add a overflow watcher for div.alarm in file Day.svelte and make it change based on that
-    add a loading spinner to the Day Component div titled .place-holder;
     
+    Calendar[mvp]:
+        MonthView[mvp**]: 
+            -view alarms for the month  
+            -allow for scrolling where it stopping by snapping to the neareast half way interval
+
+        DayView[mvp**]: 
+            -view alarms for the day
+            -allow for scrolling where it stopping by snapping to the neareast half way interval
+
+    Workspaces:
+        WS-browser[mvp]:
+            -search bar
+            -[mvp] list of recent workspaces w/ their names  && preview img
+            -allow for groups of related workspaces to be made
+
+        Components(for WSContainers): 
+            -PhysicsEngine
+            -GLWrapper/gfx-lib
+            -svg[animator-and-editor]
+            -Calculator[mvp]
+            -Img [mvp]
+            -Notes [mvp]
+            -VidPlayer     
+            -WebPlayer
+
+        WSContainers[mvp]:
+            sizing[mvp]: 
+                Just do this with a css grid
+                    -rows
+                    -columns
+                    -grid-gap
+                    -component spacing ( with like empty WSCs )
+
+            scrolling[mvp]: 
+                by screen-pane 
+                *think abt how to adapt a large horizontal screen size to
+                a small vertiacal screen
+
+            layouts[mvp]:
+
+                tiled[mvp]:
+                    basically the default layout where u can see all the components
+                    that you have in your workspace
+
+                board:
+                    kinda of like the visual inverse of a tiled layout
+                    so instead of having all your components aim to stretch 
+                    to fit a pre-defined size you use arrows and size them 
+                    manually  
+
+                tree: 
+                    order each component like a folder 
+                    visually it should kinda copy vscode's folder look
+                    with bar on the top that tells u where u are in the tree IE:
+                    [root > thing 1 > thing 2] ETC. . .
+
+
+
