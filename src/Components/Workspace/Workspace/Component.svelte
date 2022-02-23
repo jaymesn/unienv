@@ -1,8 +1,5 @@
 <script lang="ts">
 
-    import Notes from "../../../WorkspaceComponents/Notes/Note.svelte";
-    import ThoughtGraph from "../../../WorkspaceComponents/ThoughtGraph/ThoughtGraph.svelte";
-
     export let selected:string;
  
 

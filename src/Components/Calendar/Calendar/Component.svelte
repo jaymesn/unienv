@@ -2,9 +2,8 @@
 
     import MonthView from "../MonthView.svelte";
     import DayView from "../DayView.svelte";
-    import { dateToDayNum, Names ,getNumEnd, getDayNum} from "../../../Shared/Utils";
+    import { dateToDayNum, Names ,getNumEnd, getDayNum} from "../../../Utils";
     import type { Controller } from "./Controller"
-    import { state } from "./Controller"
     export let ctrl:Controller;
 
     let view:"Day"|"Month" = "Month";

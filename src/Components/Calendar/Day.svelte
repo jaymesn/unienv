@@ -1,75 +1,76 @@
+<!--    #script    -->
 <script lang="ts">
-    import type { CalendarState, DayAlarms } from "./Calendar/Types";
+    import type { CalendarState,  WSAlarms, YearAlarms } from "./Calendar/Types";
     import type { Controller } from "./Calendar/Controller"
-    import { getNumEnd } from "../../Shared/Utils"
-    import { state } from "./Calendar/Controller"
-    import { onDestroy } from "svelte";
-    import App from "../../App.svelte";
-    import Browser from "../Workspace/Browser.svelte";
-    import Component from "./Calendar/Component.svelte";
+    import { getNumEnd } from "../../Utils"
+    import { Data } from "./Calendar/Data"
+    import type { AppInfo } from "../../AppInfo";
+
+    // this is so that we can determine if day alarms
+    // and ctrl.alarms is can be accessed
 
     export let ctrl:Controller;
     export let dayNum:number;
     export let monthNum:number
     export let yearNum:number
 
-    let date = new Date();
-    let dayAlarms:DayAlarms = new Map();    
-    let addAlarmToggle:boolean = false; $: addAlarmToggle = addAlarmToggle;
-    state.alarms.subscribe(newState=>{
-        // when  local component data NEEDS to be updated 
-        if(
-            newState[0] === "all" && newState[1] === "update" || 
-            newState[0] === "all" && newState[1] === "import" ||
-            newState[0] === dayNum && newState[1] === "update" ||
-            newState[0] === dayNum && newState[1] === "import" 
-        ){
-            // for some reason this failes the 
-            // array checker figure this out
-            ctrl.getAlarm(2022,90)
-
-        }else {
+   
+    let localCtrlState:CalendarState = {'affected':"all","action":"uninit"} 
+    let dayAlarms:WSAlarms = new Map();    // the workspace alarms for that day
+    ctrl.data.state.alarms.subscribe(newState=>{
+        localCtrlState = newState;
+      
+        if(localCtrlState.action === "update" && localCtrlState.affected === dayNum){
+            dayAlarms = ctrl.getAlarm<WSAlarms>(yearNum,monthNum,dayNum);
+  
+        }else if(localCtrlState.action === "import"){
+            dayAlarms = ctrl.getAlarm<WSAlarms>(yearNum,monthNum,dayNum);
         }
     })    
 
-    
+    const handleClick = (e) => {
+        console.log('hello click');
+    }
+
+    // b4 wiring up clicks to the add alrm button and fixing 
+    // setAlarm put some thought into what type of navigation 
+    // ths app should have and how it should take shape
 
     
 </script>
-<div class="day" >
+
+<!--    #templates    -->
+<div class="day">
+
     <div class="day-title">
 
         <p class="day-number">{  dayNum+getNumEnd(dayNum)}</p>
 
     </div>
+
     <div class="alarms">
-        <!-- FIX THIS HTML SO THAT WHEN U LOOP OVER dayAlarms it works -->
-        {#each [...dayAlarms] as wsAlarmArr} 
-            {#each wsAlarmArr as wsAlarm}
-                    <!-- <div class="alarm"> -->
-                        <!-- {#if typeof alarm.icon === "string"}-->
-                            <!-- <div class="ws-icon" style="--ws-colour:{alarm.icon};"></div>  -->
-                            <!-- <p class="ws-alarm-text">-->
-                                <!-- {alarm.name}-->
-                            <!-- </p> -->
-                        <!-- {:else}-->
-                            <!-- <div class="ws-icon" style="--ws-colour:grey;"></div>  -->
-                        <!-- {/if}-->
-
-                    <!-- </div>-->
-            
-            <!--{#if [...dayAlarms].length !== 0}-->
-                    <!--<button on:click={handleClick} class="ws-add-alarm">+ alarm</button>-->
-            <!--{:else}-->
-                    <!--<button on:click={handleClick} class="ws-add-alarm-2">+</button>-->
-            <!--{/if}-->
+        {#if dayAlarms}
+            {#each [...dayAlarms] as [wsName,wsAlarms]}
+                {#each wsAlarms as alarm}
+                    <div class="alarm"> 
+                        <div class="ws-icon" style="--ws-colour:{alarm.icon};"></div> 
+                        <p class="ws-alarm-text">{alarm.name}</p>
+                    </div> 
+                       
+                {/each}
+                
             {/each}
-        {/each}
-    <div/>
-
+            {#if Array.from(dayAlarms.values()).length !== 0}
+                <button on:click={handleClick} class="ws-add-alarm">+ alarm</button>
+            {/if}
+        
+        {:else} 
+            <button on:click={handleClick} class="ws-add-alarm-2">+</button>
+        {/if}
+    </div>
 </div>
-</div>
 
+<!--    #style  -->
 <style>
     .day {
         /* the 1 represents bar-height and 5 is the amount of row-gaps*/

@@ -1,9 +1,42 @@
+-work on TELE (till wk3)
+-work on MATH (till wk3)
+-work on COMM (till wk3) *IF YOU FEEL LIKE IT
 
-TabComponents:
-    TaskMonitor:
-        things that help ppl w/ adhd
+
+Other comments:
+
+    HOW -Components- should work 
+
+        ONLY Controller can inteface,access or mutate data
+        // think GET,SET and other mutator methods etc . . .
+
+        // also allow for the controller to be extended
+        // and hold custom unknown and dynamic values
+
+    
+        ONLY DataState  can serialize/de-serialize && import data
+        // think importing(w/ strings),writing to local or other storage && 
+        // managing svelte stores and cross component communication 
+
+        ONLY Component  can actually affect html and render data
+        // think writing in .svelte, .jsx, .html or other
+
+        ONLY Types      can contain the typing for all of the above
+        // think typing classes,data structures 
+
+    HOW -Libs- should work
+        Lib spot 1: under ./src/components/[NAME]/Libs itself; // Component lvl Libs
+        Lib spot 2: under ./src/Libs ;  // system wide libsk
+        Lib spot 3: underjfsdkjfs./public/Libs // dynaic libs/cdn or other static files hosted elsewhere;
+
+
+Components:
+
+    Img   ( display images ) [mvp-1]
+    Notes ( display   text ) [mvp-1]
 
     Calculator:
+        (try to make this the first react.js component)
         basical calculator but be able to handle . . .
         dates[yy,mm,dd], times[hh,mm,ss] ,temps(C -> F) && normal calculations
         also the temporary storing of results in history presented well 
@@ -18,21 +51,12 @@ TabComponents:
             -view alarms for the day
             -allow for scrolling where it stopping by snapping to the neareast half way interval
 
-    Workspaces:
-        WS-browser[mvp]:
+
+    Workspaces[mvp-1]:
+        on:WS-broweser
             -search bar
             -[mvp] list of recent workspaces w/ their names  && preview img
             -allow for groups of related workspaces to be made
-
-        Components(for WSContainers): 
-            -PhysicsEngine
-            -GLWrapper/gfx-lib
-            -svg[animator-and-editor]
-            -Calculator[mvp]
-            -Img [mvp]
-            -Notes [mvp]
-            -VidPlayer     
-            -WebPlayer
 
         WSContainers[mvp]:
             sizing[mvp]: 
@@ -65,5 +89,29 @@ TabComponents:
                     with bar on the top that tells u where u are in the tree IE:
                     [root > thing 1 > thing 2] ETC. . .
 
+            
+        TaskMonitor[mvp-2]:
+            things that help ppl w/ adhd
 
+        -AudioPlayer[mvp-2]     
+        (
+            for this sort of thing look at ur audio player
+            diagram for how it should work and cut out all 
+            native parts so ONLY a pwa
+        ) 
 
+        -GLWrapper/gfx-lib[mvp-3]
+        -PhysicsEngine[points,lines,cricles][mvp-3]
+
+        -svg[animator-and-editor][mvp-4]
+        -WebPlayer[mvp-4] ( iframes/PWAs/offline webites as apps )
+        * this includes making any component above a standalone app
+
+        -VidPlayer[mvp-4]
+        ( 
+            for now just do vi streaming IE: youtube & vlc like data streaming
+            this is what will turn this into a WM play a vid feed
+            of an app from a X server or wayland compositer
+        )     
+
+       

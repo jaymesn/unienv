@@ -1,32 +1,30 @@
 <script lang="ts">
 	
-	import Error from "./Shared/Error.svelte"
 
-	import Calendar from  "./TabComponents/Calendar/Calendar/Component.svelte";
-	import { Controller as CalendarController } from "./TabComponents/Calendar/Calendar/Controller"
+	import Calendar from  "./Components/Calendar/Calendar/Component.svelte";
+	import { Controller as CalendarController } from "./Components/Calendar/Calendar/Controller"
+	import { Data as CalendarData } from "./Components/Calendar/Calendar/Data"
+	let calendarData = new CalendarData({
+            "loc":"network",
+            "name":"./@data/Alarms.json",
+            "type":'JSON'
+        });
+	let calendarCtrl = new CalendarController(calendarData);	
 
-	import Workspace from "./TabComponents/Workspace/Workspace/Component.svelte"
-	import { Controller as WorkspaceController } from "./TabComponents/Workspace/Workspace/Controller"
+	import Workspace from "./Components/Workspace/Workspace/Component.svelte"
+	import { Controller as WorkspaceController } from "./Components/Workspace/Workspace/Controller"
 	
-	let calendarCTRL = new CalendarController("./@data/Alarms.json");	
-	let workspaceCTRL = new WorkspaceController();	
+	let workspaceCtrl = new WorkspaceController();	
 
 	let selected = 0;
-	(window as any).ctrl = calendarCTRL; 
+	(window as any).ctrl = calendarCtrl; 
+
 </script>
 
 <div class="app-root">
 	<!-- make this less for navigatio and more like polybar, so a thing to play and customize -->
 
-    {#if selected === 0}
-		<Calendar ctrl={calendarCTRL}  />
-    {:else if selected === 1}
-		<Workspace selected={"ws1"}/>
-    {:else}
-        <Error name="Something Went Wrong"/>
-    {/if}
-
-	
+    	
 </div>
 
 <style>
